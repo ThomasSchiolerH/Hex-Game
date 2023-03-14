@@ -1,7 +1,12 @@
-import drawboard
+from game import Game
+import pygame
 
 def main():
-    drawboard.drawboard()
+    pygame.init()
+    pygame.display.set_caption("Hex")
+    game = Game()
+    #Start the game
+    game.play()
 
 if __name__ == "__main__":
     main()
