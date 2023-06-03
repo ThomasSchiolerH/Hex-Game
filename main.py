@@ -1,5 +1,5 @@
 from game import Game
-import pygame
+import pygame, numpy
 
 def main():
     pygame.init()
