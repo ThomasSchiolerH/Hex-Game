@@ -2,6 +2,7 @@ import pygame
 import pygame.gfxdraw
 from math import cos, sin, pi, radians
 from pygame import gfxdraw
+import Tile
 
 class Board:
     def __init__(self):
@@ -11,7 +12,8 @@ class Board:
         self.white = (255, 255, 255)
         self.teal = (0, 128, 128)
         self.red = (255, 0, 0)
-        self.boardSize = 6
+        self.blue = (0,0,255)
+        self.boardSize = 10
         self.hex_radius = 20
         self.x_offset, self.y_offset = 60, 60
         self.text_offset = 45
@@ -26,7 +28,7 @@ class Board:
 
         #object
         self.s = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA, 32)
-        self.color = [self.white] * (self.boardSize ** 2)
+        self.color = [self.black] * (self.boardSize ** 2)
         self.rects = []
         self.node = None
         self.fonts = pygame.font.SysFont("Arial", 20)
@@ -35,7 +37,7 @@ class Board:
 
 
     def drawHexagon(self, surface, color: tuple, position: tuple, node: int):
-        print("Drawing hexagon at node: ", node)
+        #print("Drawing hexagon at node: ", node)
         polyEdges = 6
         x, y = position
         offset = 3
@@ -47,11 +49,11 @@ class Board:
         gfxdraw.aapolygon(self.s, self.hexDictionary[node], color)
 
         #Make the hexagon filled, we use a polygon and then draw the hexagon from mathematical definition
-        gfxdraw.filled_polygon(self.s, 
-                                [(x + self.hex_radius * cos(radians(90) + 2 * pi * _ / polyEdges),
-                                y + self.hex_radius * sin(radians(90) + 2 * pi * _ / polyEdges))
-                                for _ in range(polyEdges)], 
-                                self.color[node])
+        #gfxdraw.filled_polygon(self.s,
+        #                        [(x + self.hex_radius * cos(radians(90) + 2 * pi * _ / polyEdges),
+        #                        y + self.hex_radius * sin(radians(90) + 2 * pi * _ / polyEdges))
+        #                        for _ in range(polyEdges)],
+        #                        self.color[node])
         
 
         #The hexagon outline to be able to see it on the white background
@@ -127,13 +129,13 @@ class Board:
 
         for _ in range(self.boardSize):
             # Columns
-            text = self.fonts.render(alphabet[_].upper(), True, self.white, self.black)
+            text = self.fonts.render(alphabet[_].upper(), True, self.red)
             text_rect = text.get_rect()
             text_rect.center = (self.x_offset + (2 * self.hex_radius) * _, self.text_offset / 2)
             self.screen.blit(text, text_rect)
 
             # Rows
-            text = self.fonts.render(str(_), True, self.white, self.black)
+            text = self.fonts.render(str(_), True, self.blue)
             text_rect = text.get_rect()
             text_rect.center = (
                 (self.text_offset / 4 + self.hex_radius * _, self.y_offset + (1.75 * self.hex_radius) * _))

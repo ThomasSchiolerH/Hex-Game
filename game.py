@@ -1,6 +1,12 @@
+from math import cos, sin, pi, radians, dist
+
+from pygame import gfxdraw
+
 from drawboard import Board
 import pygame
 import sys
+import numpy as np
+from scipy.spatial.distance import cdist
 
 class Game:
     def __init__(self, boardSize: int = 6):
@@ -22,7 +28,25 @@ class Game:
         sys.exit()
 
     def turn(self):
-        pass
+        print(self.getNearestTile())
+
+        gfxdraw.filled_polygon(self.board.screen,
+                                [(50 + self.board.hex_radius * cos(radians(90) + 2 * pi * _ / 6),
+                                50 + self.board.hex_radius * sin(radians(90) + 2 * pi * _ / 6))
+                                for _ in range(6)],
+                               (255,0,0))
+
+
+    def getNearestTile(self):
+        nearestTile = None
+        minDist = 6000
+
+        for i in self.board.hexDictionary:
+            distance = dist(pygame.mouse.get_pos(), self.board.hexDictionary[i][0])
+            if distance < minDist:
+                minDist = distance
+                nearestTile = i
+        return nearestTile
 
     def play(self):
         print("Playing")
