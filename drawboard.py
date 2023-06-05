@@ -19,10 +19,14 @@ class Board:
         self.text_offset = 45
         self.hexDictionary = {}
 
+
+
         #window size and color
+        self.winWidth = self.x_offset + (2 * self.hex_radius) * self.boardSize + self.hex_radius * self.boardSize
+        self.winHeight = round(self.y_offset + (1.75 * self.hex_radius) * self.boardSize)
+
         self.screen = pygame.display.set_mode(
-            (self.x_offset + (2 * self.hex_radius) * self.boardSize + self.hex_radius * self.boardSize,
-             round(self.y_offset + (1.75 * self.hex_radius) * self.boardSize)))
+            (self.winWidth, self.winHeight))
         
         self.screen.fill(self.white)
 
@@ -43,20 +47,22 @@ class Board:
         offset = 3
 
         self.hexDictionary[node] = [(x + (self.hex_radius + offset) * cos(radians(90) + 2 * pi * _ / polyEdges),
-                                  y + (self.hex_radius + offset) * sin(radians(90) + 2 * pi * _ / polyEdges))
+                                     y + (self.hex_radius + offset) * sin(radians(90) + 2 * pi * _ / polyEdges))
                                  for _ in range(polyEdges)]
+        self.hexDictionary[node].append((x,y))
 
         gfxdraw.aapolygon(self.s, self.hexDictionary[node], color)
 
         #Make the hexagon filled, we use a polygon and then draw the hexagon from mathematical definition
-        #gfxdraw.filled_polygon(self.s,
-        #                        [(x + self.hex_radius * cos(radians(90) + 2 * pi * _ / polyEdges),
-        #                        y + self.hex_radius * sin(radians(90) + 2 * pi * _ / polyEdges))
-        #                        for _ in range(polyEdges)],
-        #                        self.color[node])
+        gfxdraw.filled_polygon(self.s,
+                                [(x + self.hex_radius * cos(radians(90) + 2 * pi * _ / polyEdges),
+                                y + self.hex_radius * sin(radians(90) + 2 * pi * _ / polyEdges))
+                                for _ in range(polyEdges)],
+                                self.red)
         
 
         #The hexagon outline to be able to see it on the white background
+
         gfxdraw.aapolygon(surface,
                   [(x + self.hex_radius * cos(radians(90) + 2 * pi * _ / polyEdges),
                     y + self.hex_radius * sin(radians(90) + 2 * pi * _ / polyEdges))
@@ -121,7 +127,37 @@ class Board:
                     y - self.hex_radius / 2, 2 * self.hex_radius - (2 * offset ),
                     self.hex_radius)
         )
+
         self.rects.append(rect)
+
+
+        ''' IMPROVE TOUCHZONE TO DO:
+        touchZone = pygame.Rect(0,0,50,
+                                150)
+
+        fodder = 10
+        n = len(self.hexDictionary)
+
+        startPoint = (self.hexDictionary[0][3][0] - fodder, self.hexDictionary[0][3][1] - fodder)
+        secondPoint = (self.hexDictionary[self.boardSize][4][0] + fodder, self.hexDictionary[self.boardSize][4][1] + fodder)
+        thirdPoint = (self.hexDictionary[(n-1) - self.boardSize][4][0] - fodder, self.hexDictionary[(n-1) - self.boardSize][4][1] - fodder)
+        endPoint = (self.hexDictionary[n-1][5][0] + fodder, self.hexDictionary[n-1][5][1] + fodder)
+        
+        print(self.hexDictionary)
+        
+        points = [(self.hexDictionary[0][3][0] - fodder, self.hexDictionary[0][3][1] - fodder),
+                    (self.hexDictionary[self.boardSize][4][0] + fodder, self.hexDictionary[self.boardSize][4][1] + fodder),
+                    (self.hexDictionary[(n-1) - self.boardSize][4][0] - fodder, self.hexDictionary[(n-1) - self.boardSize][4][1] - fodder),
+                    (self.hexDictionary[n-1][5][0] + fodder, self.hexDictionary[n-1][5][1] + fodder)]
+
+        polygon_mask = pygame.Surface((self.winWidth, self.winHeight), pygame.SRCALPHA)
+        pygame.gfxdraw.filled_polygon(polygon_mask, points, (0,0,0))  # White fill color
+        polygon_mask = pygame.mask.from_surface(polygon_mask)
+
+        #pygame.draw.rect(self.screen, (0,0,0), touchZone)'''
+
+
+
 
         
     def draw_board_coordinates(self):
@@ -149,7 +185,27 @@ class Board:
             for column in range(self.boardSize):
                 self.drawHexagon(self.screen, self.black, self.get_coordinates(row, column), counter)
                 counter += 1
+
         self.draw_board_coordinates()
+
+    def drawChosenTile(self, x, y, color):
+        #fill color
+        gfxdraw.filled_polygon(self.screen,
+                               [(x + self.hex_radius * cos(radians(90) + 2 * pi * _ / 6),
+                                 y + self.hex_radius * sin(radians(90) + 2 * pi * _ / 6))
+                                for _ in range(6)],
+                               color)
+
+        #outline color
+        gfxdraw.aapolygon(self.screen,
+                          [(x + self.hex_radius * cos(radians(90) + 2 * pi * _ / 6),
+                            y + self.hex_radius * sin(radians(90) + 2 * pi * _ / 6))
+                           for _ in range(6)],
+                          self.black)
+
+        pygame.display.update()
+
+
 
     def get_coordinates(self, row: int, column: int):
         x = self.x_offset + (2 * self.hex_radius) * column + self.hex_radius * row

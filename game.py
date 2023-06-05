@@ -11,6 +11,10 @@ from scipy.spatial.distance import cdist
 class Game:
     def __init__(self, boardSize: int = 6):
         self.board = Board()
+        self.playerTurnColor = [(255,0,0),(0,0,255)]
+        self.playerTurn = 0
+        rows = cols = self.board.boardSize
+        self.boardMatrix = [[-1 for i in range(cols)] for j in range(rows)]
 
 
     def event_handler(self):
@@ -23,18 +27,27 @@ class Game:
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.turn()
+                    if (self.playerTurn == 0):
+                        self.playerTurn = 1
+                    elif (self.playerTurn == 1):
+                        self.playerTurn = 0
         
         pygame.quit()
         sys.exit()
 
     def turn(self):
-        print(self.getNearestTile())
+        selectedTile = self.getNearestTile()
+        x, y = self.board.hexDictionary[selectedTile][6]
 
-        gfxdraw.filled_polygon(self.board.screen,
-                                [(50 + self.board.hex_radius * cos(radians(90) + 2 * pi * _ / 6),
-                                50 + self.board.hex_radius * sin(radians(90) + 2 * pi * _ / 6))
-                                for _ in range(6)],
-                               (255,0,0))
+        self.board.drawChosenTile(x,y,self.playerTurnColor[self.playerTurn])
+        self.makeMoveInMatrix(selectedTile)
+
+
+    def makeMoveInMatrix(self, tile):
+        row = tile // self.board.boardSize
+        column = tile % self.board.boardSize
+
+        self.boardMatrix[row][column] = self.playerTurn
 
 
     def getNearestTile(self):
@@ -42,7 +55,7 @@ class Game:
         minDist = 6000
 
         for i in self.board.hexDictionary:
-            distance = dist(pygame.mouse.get_pos(), self.board.hexDictionary[i][0])
+            distance = dist(pygame.mouse.get_pos(), self.board.hexDictionary[i][6])
             if distance < minDist:
                 minDist = distance
                 nearestTile = i
