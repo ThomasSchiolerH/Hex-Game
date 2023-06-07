@@ -1,21 +1,17 @@
 from math import cos, sin, pi, radians, dist
-
-from pygame import gfxdraw
-
+from constants import *
 from drawboard import Board
 import pygame
 import sys
-import numpy as np
-from scipy.spatial.distance import cdist
 
 
 class Game:
-    def __init__(self, boardSize: int = 6):
-        self.board = Board()
-        self.playerTurnColor = [(255, 0, 0), (0, 0, 255)]
-        self.playerTurn = 0
-        rows = cols = self.board.boardSize
-        self.boardMatrix = [[-1 for i in range(cols)] for j in range(rows)]
+    def __init__(self, screen):
+        self.board = Board(SIZE)
+        self.clock = pygame.time.Clock()
+        self.playerTurn = True
+        self.screen = screen
+        self.boardMatrix = [[-1 for i in range(SIZE)] for j in range(SIZE)]
 
     def event_handler(self):
         running = True
@@ -26,47 +22,22 @@ class Game:
                     print("Quit")
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    passableTurn = self.turn()
-                    if passableTurn:
-                        if self.playerTurn == 0:
-                            self.playerTurn = 1
-                        elif self.playerTurn == 1:
-                            self.playerTurn = 0
-
+                    pos = self.board.get_neareast_pos(*pygame.mouse.get_pos())
+                    if pos is not None:
+                        self.turn(*pos)
+                    self.board.draw_board(self.boardMatrix, self.screen)
         pygame.quit()
         sys.exit()
 
-    def turn(self):
-        correct = False
-        selectedTile = self.getNearestTile()
-        x, y = self.board.hexDictionary[selectedTile][6]
-        if self.board.tileColored(x, y):
-            self.board.drawChosenTile(x, y, self.playerTurnColor[self.playerTurn])
-            self.makeMoveInMatrix(selectedTile)
-            correct = True
-        return correct
-
-    def makeMoveInMatrix(self, tile):
-        row = tile // self.board.boardSize
-        column = tile % self.board.boardSize
-
-        self.boardMatrix[row][column] = self.playerTurn
-
-    def getNearestTile(self):
-        nearestTile = None
-        minDist = 6000
-
-        for i in self.board.hexDictionary:
-            distance = dist(pygame.mouse.get_pos(), self.board.hexDictionary[i][6])
-            if distance < minDist:
-                minDist = distance
-                nearestTile = i
-        return nearestTile
+    def turn(self, i, j):
+        if self.boardMatrix[i][j] == -1:
+            self.boardMatrix[i][j] = int(self.playerTurn)
+            self.playerTurn = not self.playerTurn
 
     def play(self):
         print("Playing")
-        self.board.draw_board()
+        self.board.draw_board(self.boardMatrix, self.screen)
 
         pygame.display.update()
-        self.board.clock.tick(30)
+        self.clock.tick(30)
         self.event_handler()

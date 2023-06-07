@@ -1,8 +1,10 @@
 import pygame, pygame_menu
 from pygame_menu import themes
+from drawboard import Board
 
 from game import Game
-from menuScreenUtilities import WIDTH, HEIGHT, BACKGROUND_COLOUR, WINDOW_NAME, RESOLUTION, main_theme, difficulty_theme, about_theme, about_text
+from MPGame import MPGame
+from constants import *
 
 
 def show_menu():
@@ -28,9 +30,9 @@ def show_menu():
     surface = pygame.display.set_mode((WIDTH, HEIGHT))
 
     #Menus
-    def start_the_game():
-        mainmenu._open(loading)
-        pygame.time.set_timer(update_loading, 30)
+    def start_game():
+        game = Game(screen)
+        game.play()
 
     def level_menu():
         mainmenu._open(level)
@@ -42,47 +44,49 @@ def show_menu():
     def about_menu():
         mainmenu._open(about)
 
+    def host_game():
+        mpgame = MPGame(screen)
+        mpgame.host_game()
+
+
+    def join_game():
+        mpgame = MPGame(screen)
+        mpgame.join_game()
+
 
     #Main menu screen
-    mainmenu = pygame_menu.Menu('WELCOME TO HEX', WIDTH, HEIGHT, theme=main_theme)
+    mainmenu = pygame_menu.Menu('WELCOME TO HEX', WIDTH, HEIGHT, theme=themes.THEME_DARK)
 
-    #The rest of the buttons
-    play_button = mainmenu.add.button('Play', start_the_game)
+    # The rest of the buttons
+    play_button = mainmenu.add.button('Play', start_game)
+    host_button = mainmenu.add.button('Host', host_game)
+    join_button = mainmenu.add.button('Join', join_game)
     level_button = mainmenu.add.button('Computer Level', level_menu)
     about_button = mainmenu.add.button('About the Game', about_menu)
     quit_button = mainmenu.add.button('Quit', pygame_menu.events.EXIT)
 
-    level = pygame_menu.Menu('Select a Difficulty', WIDTH, HEIGHT, theme=difficulty_theme)
+    level = pygame_menu.Menu('Select a Difficulty', WIDTH, HEIGHT, theme=themes.THEME_DARK)
     level.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2), ('Medium', 3)], onchange=set_difficulty)
-
-    loading = pygame_menu.Menu('Loading Hex...', WIDTH, HEIGHT, theme=themes.THEME_DARK)
-    loading.add.progress_bar("Progress", progressbar_id="1", default=0, width=200, )
     arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
-    about = pygame_menu.Menu('About Hex', WIDTH, HEIGHT, theme=about_theme)
+    about = pygame_menu.Menu('About Hex', WIDTH, HEIGHT, theme=themes.THEME_DARK)
     about.add.label(about_text)
 
-    update_loading = pygame.USEREVENT + 0
+    host = pygame_menu.Menu('Host a new game', WIDTH, HEIGHT, theme=themes.THEME_DARK)
+
+    join = pygame_menu.Menu('Join game', WIDTH, HEIGHT, theme=themes.THEME_DARK)
+
+
 
     while True:
         events = pygame.event.get()
         for event in events:
-            if event.type == update_loading:
-                progress = loading.get_widget("1")
-                progress.set_value(progress.get_value() + 1)
-                if progress.get_value() == 100:
-                    pygame.time.set_timer(update_loading, 0)
-                    # Create an instance of the Game class
-                    game = Game()
-                    # Start the game by calling the play() method
-                    game.play()
             if event.type == pygame.QUIT:
                 exit()
-
         if mainmenu.is_enabled():
             mainmenu.update(events)
             mainmenu.draw(surface)
-            if (mainmenu.get_current().get_selected_widget()):
+            if mainmenu.get_current().get_selected_widget():
                 arrow.draw(surface, mainmenu.get_current().get_selected_widget())
 
         pygame.display.update()
