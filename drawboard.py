@@ -213,7 +213,9 @@ class Board:
 
         return x, y
 
-
+    def tileColored(self, x, y):
+        print(self.screen.get_at((int(x), int(y))) == self.white)
+        return self.screen.get_at((int(x), int(y))) == self.white
 
 
 
