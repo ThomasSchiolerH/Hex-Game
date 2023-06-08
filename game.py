@@ -11,7 +11,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.playerTurn = True
         self.screen = screen
-        self.boardMatrix = [[-1 for i in range(SIZE)] for j in range(SIZE)]
+        self.boardMatrix = [[-1 for _ in range(SIZE)] for _ in range(SIZE)]
 
     def event_handler(self):
         running = True
