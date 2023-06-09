@@ -37,82 +37,85 @@ class Board:
         leftRowCorners = []
         rightRowCorners = []
         bottomRowCorners = []
-        borderSize = 2.5
+        borderSize = 2.7
         cornerCoords = [self.get_pixel_coords(0, 0),
                         self.get_pixel_coords(self.size - 1, 0),
                         self.get_pixel_coords(0, self.size-1),
                         self.get_pixel_coords(self.size-1, self.size-1)]
-        # find corner coordinates
 
-        # top left TODO
-        topRowCorners.append((cornerCoords[0][0] + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * 2 / 6),
-                        cornerCoords[0][1] + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * 2 / 6)))
-        # top right
-        topRowCorners.append((cornerCoords[1][0] + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * 3.39 / 6),
-                        cornerCoords[1][1] + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * 3.81 / 6)))
-        """
-        # bottom left
-        corners.append((cornerCoords[2][0] + (12 * self.gap) * cos(radians(90) + 2 * pi * 0.55 / 6),
-                        cornerCoords[2][1] + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * 1 / 6)))
-        # bottom right
-        corners.append((cornerCoords[3][0] + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * 5 / 6),
-                        cornerCoords[3][1] + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * 5 / 6)))
+        # construct border points for top row
+        topRowCorners.append((cornerCoords[0][0] + (HEX_RADIUS * borderSize) * cos(radians(90) + 2 * pi * 2 / 6),
+                              cornerCoords[0][1] + (HEX_RADIUS * borderSize) * sin(radians(90) + 2 * pi * 2 / 6)))
+        topRowCorners.extend(self.findPolygonPoints("topRowCorners"))
+        topRowCorners.pop(len(topRowCorners) - 1)
+        topRowCorners.append((cornerCoords[1][0] + (24 * self.gap) * cos(radians(90) + 2 * pi * 3.39 / 6),
+                              cornerCoords[1][1] + (21 * self.gap) * sin(radians(90) + 2 * pi * 3.81 / 6)))
 
-        #calculate border corners
-        # top left
-        corners.append((cornerCoords[0][0] + (HEX_RADIUS * borderSize) * cos(radians(90) + 2 * pi * 2 / 6),
-                        cornerCoords[0][1] + (HEX_RADIUS * borderSize) * sin(radians(90) + 2 * pi * 2 / 6)))
-        # top right
-        corners.append((cornerCoords[1][0] + (12 * borderSize) * cos(radians(90) + 2 * pi * 3.55 / 6),
-                        cornerCoords[1][1] + (HEX_RADIUS * borderSize) * sin(radians(90) + 2 * pi * 4 / 6)))
-        # bottom left
-        corners.append((cornerCoords[2][0] + (12 * borderSize) * cos(radians(90) + 2 * pi * 0.55 / 6),
-                        cornerCoords[2][1] + (HEX_RADIUS * borderSize) * sin(radians(90) + 2 * pi * 1 / 6)))
-        # bottom right
-        corners.append((cornerCoords[3][0] + (HEX_RADIUS * borderSize) * cos(radians(90) + 2 * pi * 5 / 6),
+        topRowCorners.append((cornerCoords[1][0] + (12 * borderSize) * cos(radians(90) + 2 * pi * 3.55 / 6),
+                              cornerCoords[1][1] + (HEX_RADIUS * borderSize) * sin(radians(90) + 2 * pi * 4 / 6)))
+
+        # construct border points for right row
+        rightRowCorners.append(topRowCorners[len(topRowCorners) - 1])
+        rightRowCorners.append(topRowCorners[len(topRowCorners) - 2])
+        rightRowCorners.extend(self.findPolygonPoints("rightRowCorners"))
+        rightRowCorners.pop(2)
+        rightRowCorners.append((cornerCoords[3][0] + (HEX_RADIUS * borderSize) * cos(radians(90) + 2 * pi * 5 / 6),
                         cornerCoords[3][1] + (HEX_RADIUS * borderSize) * sin(radians(90) + 2 * pi * 5 / 6)))
-        """
-        """
-        filled_polygon(screen, [corners[4],corners[0],corners[1],corners[5]], PLAYER_COLORS[0])
-        filled_polygon(screen, [corners[5], corners[1], corners[3], corners[7]], PLAYER_COLORS[1])
-        filled_polygon(screen, [corners[3], corners[7], corners[6], corners[2]], PLAYER_COLORS[0])
-        filled_polygon(screen, [corners[2], corners[6], corners[4], corners[0]], PLAYER_COLORS[1])
 
+        # construct border points for bottom row
+        bottomRowCorners.append((cornerCoords[2][0] + (12 * borderSize) * cos(radians(90) + 2 * pi * 0.55 / 6),
+                                 cornerCoords[2][1] + (HEX_RADIUS * borderSize) * sin(radians(90) + 2 * pi * 1 / 6)))
+        bottomRowCorners.append((cornerCoords[2][0] + (24 * self.gap) * cos(radians(90) + 2 * pi * 0.39 / 6),
+                                cornerCoords[2][1] + (21 * self.gap) * sin(radians(90) + 2 * pi * 0.81 / 6)))
+        bottomRowCorners.extend(self.findPolygonPoints("bottomRowCorners"))
+        bottomRowCorners.pop(2)
+        bottomRowCorners.extend(rightRowCorners[-2:])
 
-        aapolygon(screen, [corners[4],corners[0],corners[1],corners[5]], BLACK)
-        aapolygon(screen, [corners[5], corners[1], corners[3], corners[7]], BLACK)
-        aapolygon(screen, [corners[3], corners[7], corners[6], corners[2]], BLACK)
-        aapolygon(screen, [corners[2], corners[6], corners[4], corners[0]], BLACK)
-        """
+        # construct border points for left
+        leftRowCorners.append(topRowCorners[0])
+        leftRowCorners.extend(self.findPolygonPoints("leftRowCorners"))
+        leftRowCorners.pop(len(leftRowCorners) - 1)
+        leftRowCorners.extend([bottomRowCorners[1], bottomRowCorners[0]])
 
-        """
-        cornerHelper = [0, 1, 6]
-        for i in range(self.size):
-            for j in range(self.size):
-                x, y = self.get_pixel_coords(i, j)
-                if i == 0:  # left row
-                    for n in range(0, 3):
-                        leftRowCorners.append((x + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * n / 6),
-                                                y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * n / 6)))
-                elif i == self.size - 1:  # right row
-                    for n in range(3, 6):
-                        rightRowCorners.append((x + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * n / 6),
-                                                y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * n / 6)))
-                elif j == 0:  # top row
-                    for n in range(2, 5):
-                        topRowCorners.append((x + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * n / 6),
-                                                y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * n / 6)))
-                elif j == self.size - 1:  # bottom row
-                    for n in cornerHelper:
-                        bottomRowCorners.append((x + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * n / 6),
-                                                y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * n / 6)))
-        """
+        borders = [topRowCorners, rightRowCorners, bottomRowCorners, leftRowCorners]
+        self.drawPolygonBorders(screen, borders)
 
-        #corners = [topRowCorners,leftRowCorners,rightRowCorners,bottomRowCorners]
-        for point in topRowCorners:
-            pygame.draw.circle(screen, RED, point, 2)
+    def drawPolygonBorders(self, screen, borderList):
+        color = 0
+        for border in borderList:
+            filled_polygon(screen, border, PLAYER_COLORS[color])
+            aapolygon(screen, border, BLACK)
+            if color == 0:
+                color = 1
+            else:
+                color = 0
 
-        pygame.display.update()
+    def findPolygonPoints(self, cornerArray):
+        points = []
+        if cornerArray == "topRowCorners":
+            for i in range(self.size):
+                x, y = self.get_pixel_coords(i, 0)
+                points.extend(self.hexagonPoints(x, y, [2, 3, 4]))
+        elif cornerArray == "rightRowCorners":
+            for i in range(self.size):
+                x, y = self.get_pixel_coords(self.size-1, i)
+                points.extend(self.hexagonPoints(x, y, [3, 4, 5]))
+        elif cornerArray == "bottomRowCorners":
+            for i in range(self.size):
+                x, y = self.get_pixel_coords(i, self.size-1)
+                points.extend(self.hexagonPoints(x, y, [1, 0, 5]))
+        elif cornerArray == "leftRowCorners":
+            for i in range(self.size):
+                x, y = self.get_pixel_coords(0, i)
+                points.extend(self.hexagonPoints(x, y, [2, 1, 0]))
+
+        return points
+    def hexagonPoints(self, x, y, edges):
+        points = []
+        for i in edges:
+            points.append((x + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * i / 6),
+                           y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * i / 6)))
+        return points
 
     def draw_board(self, matrix, screen):
         self.draw_boarder(screen)
@@ -120,7 +123,6 @@ class Board:
             for j in range(self.size):
                 x, y = self.get_pixel_coords(i, j)
                 self.hexagon(x, y, screen, PLAYER_COLORS[matrix[i][j]])
-        self.draw_boarder(screen)
         pygame.display.update()
 
 
