@@ -27,6 +27,7 @@ RESOLUTION = (WIDTH, HEIGHT)
 
 # Player
 PLAYER_COLORS = [(255, 0, 0), (0, 0, 255), (255, 255, 255)]
+PLAYER_NAMES = {0: "Blue", 1: "Red"}
 
 
 about_text = """
