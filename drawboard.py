@@ -32,7 +32,6 @@ class Board:
         return i, j
 
     def draw_boarder(self, screen):
-        corners = []
         topRowCorners = []
         leftRowCorners = []
         rightRowCorners = []

@@ -71,6 +71,10 @@ def show_menu():
     about_button = mainmenu.add.button('About the Game', about_menu)
     quit_button = mainmenu.add.button('Quit', pygame_menu.events.EXIT)
 
+    buttons = [play_button, host_button, join_button, level_button, about_button, quit_button]
+
+    arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
+
     level = pygame_menu.Menu('Select a Difficulty', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
     level.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2), ('Medium', 3)], onchange=set_difficulty)
     arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
@@ -92,6 +96,7 @@ def show_menu():
         if mainmenu.is_enabled():
             mainmenu.update(events)
             mainmenu.draw(surface)
+
             if mainmenu.get_current().get_selected_widget():
                 arrow.draw(surface, mainmenu.get_current().get_selected_widget())
 
