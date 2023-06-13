@@ -118,7 +118,7 @@ class Board:
 
 
 
-    def draw_board(self, matrix, screen, winner=None):
+    def draw_board(self, matrix, screen, winner = None):
         self.draw_boarder(screen)
         for i in range(self.size):
             for j in range(self.size):

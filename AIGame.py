@@ -11,6 +11,7 @@ class AIGame(Game):
             for j in range(SIZE):
                 if self.boardMatrix[i][j] == -1:
                     available_tiles.append((i, j))
+
         if available_tiles:
             i, j = random.choice(available_tiles)
             self.boardMatrix[i][j] = int(self.playerTurn)
@@ -20,6 +21,10 @@ class AIGame(Game):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn)
             self.playerTurn = not self.playerTurn
+
+            if self.check_win_condition(
+                    int(not self.playerTurn)):  # Check if current player has won - uses opposite player
+                print(f"Player {int(self.playerTurn)} wins!")
 
             if not self.playerTurn:
                 available_tiles = []
