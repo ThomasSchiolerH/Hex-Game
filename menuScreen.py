@@ -77,7 +77,9 @@ def show_menu():
         mpgame.join_game()
 
     def test_ai_game():
-        ai_game = AIGame(screen)
+        gameScreen = pygame.display.set_mode(GAME_RESOLUTION)
+        gameScreen.fill(BACKGROUND_COLOUR)
+        ai_game = AIGame(gameScreen)
         ai_game.play()
 
     # Menu screens
@@ -102,7 +104,7 @@ def show_menu():
 
     # Computer game menu buttons
 
-    test_ai_button = main_menu.add.button('Test AI Game', test_ai_game)
+    test_ai_button = mainmenu.add.button('Test AI Game', test_ai_game)
 
 
     """
