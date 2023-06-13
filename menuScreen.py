@@ -45,7 +45,9 @@ def show_menu():
         pass
 
     def player_vs_player_game():
-        game = Game(menuScreen)
+        gameScreen = pygame.display.set_mode(GAME_RESOLUTION)
+        gameScreen.fill(BACKGROUND_COLOUR)
+        game = Game(gameScreen)
         game.play()
 
     """
@@ -74,15 +76,13 @@ def show_menu():
         mpgame.join_game()
 
     # Menu screens
-
-   # mainmenu = pygame_menu.Menu('Welcome to Hex', WIDTH, HEIGHT, theme=themes.THEME_DARK)
     game_mode_menu = pygame_menu.Menu('Select Game Mode', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
     computer_mode_menu = pygame_menu.Menu('Select Difficulty', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
 
     #Main menu screen
     mainmenu = pygame_menu.Menu('WELCOME TO HEX', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
 
-    play_button = mainmenu.add.button('Play', start_game)
+    play_button = mainmenu.add.button('Play', game_mode_menu)
     host_button = mainmenu.add.button('Host', host_game)
     join_button = mainmenu.add.button('Join', join_game)
     # level_button = main_menu.add.button('Computer Level', level_menu)
