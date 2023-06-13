@@ -1,3 +1,5 @@
+import pygame_menu, pygame_menu.font as pmfont
+
 # Multiplayer
 PORT = 9009
 
@@ -32,6 +34,13 @@ MENU_RESOLUTION = (MWIDTH, MHEIGHT)
 # Player
 PLAYER_COLORS = [(240, 0, 0), (0, 128, 255), (255, 255, 255)]
 PLAYER_NAMES = {0: "Blue", 1: "Red"}
+
+#About menu theme
+about_theme = pygame_menu.themes.THEME_DARK.copy()
+about_theme.title_font_color = (111, 222, 111)
+about_theme.title_font = pmfont.FONT_BEBAS
+about_theme.widget_font_size = 15  # Set the default font size
+about_theme.widget_font = pmfont.FONT_COMIC_NEUE
 
 about_text = """
 Hex is a two player abstract strategy board game in

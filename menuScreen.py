@@ -117,7 +117,7 @@ def show_menu():
     # level.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2), ('Medium', 3)], onchange=set_difficulty)
     arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
-    about = pygame_menu.Menu('About Hex', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
+    about = pygame_menu.Menu('About Hex', MWIDTH, MHEIGHT, theme=about_theme)
     about.add.label(about_text)
 
     host = pygame_menu.Menu('Host a new game', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
