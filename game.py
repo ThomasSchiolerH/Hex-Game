@@ -23,6 +23,10 @@ class Game:
                     pos = self.board.get_nearest_pos(*pygame.mouse.get_pos())
                     if pos is not None:
                         self.turn(*pos)
+                        # Check if the current player has won
+                        if self.check_win_condition(
+                                int(not self.playerTurn)):  # Check if current player has won - uses opposite player
+                            print(f"Player {int(self.playerTurn)} wins!")
                     self.board.draw_board(self.boardMatrix, self.screen)
         pygame.quit()
         sys.exit()
@@ -31,12 +35,6 @@ class Game:
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn) # integer 0 or 1 depending on turn - update matrix
             self.playerTurn = not self.playerTurn #Switch between true and false
-
-            # Check if the current player has won
-            if self.check_win_condition(int(not self.playerTurn)): # Check if current player has won - uses opposite player
-                print(f"Player {int(self.playerTurn)} wins!")
-
-            self.board.draw_board(self.boardMatrix, self.screen) # update game board with matrix and screen
 
     def check_win_condition(self, player):
         # Check if valid player and give player side

@@ -11,6 +11,7 @@ class AIGame(Game):
             for j in range(SIZE):
                 if self.boardMatrix[i][j] == -1:
                     available_tiles.append((i, j))
+
         if available_tiles:
             i, j = random.choice(available_tiles)
             self.boardMatrix[i][j] = int(self.playerTurn)
