@@ -4,6 +4,7 @@ from drawboard import Board
 
 from game import Game
 from MPGame import MPGame
+from AIGame import AIGame
 from constants import *
 
 
@@ -75,6 +76,10 @@ def show_menu():
         mpgame = MPGame(menuScreen)
         mpgame.join_game()
 
+    def test_ai_game():
+        ai_game = AIGame(screen)
+        ai_game.play()
+
     # Menu screens
     game_mode_menu = pygame_menu.Menu('Select Game Mode', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
     computer_mode_menu = pygame_menu.Menu('Select Difficulty', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
@@ -96,6 +101,10 @@ def show_menu():
     back_button = game_mode_menu.add.button('Back', pygame_menu.events.BACK)
 
     # Computer game menu buttons
+
+    test_ai_button = main_menu.add.button('Test AI Game', test_ai_game)
+
+
     """
     easy_button = computer_mode_menu.add.button('Easy', lambda: start_computer_game('easy'))
     medium_button = computer_mode_menu.add.button('Medium', lambda: player_vs_computer_game('medium'))
