@@ -1,32 +1,39 @@
-#Constants
 import pygame_menu, pygame_menu.font as pmfont
 
-WIDTH = (800)
-HEIGHT = (800)
-RESOLUTION = (WIDTH,HEIGHT)
-ROWS, COLS = 11,11
-HEXAGON_size = WIDTH//COLS
+# Multiplayer
+PORT = 9009
 
-#Game Window Name
+
+
 WINDOW_NAME = "HEX BOARD GAME"
 
-#Colours
-RED = (255,0,0)
-WHITE = (255,255,255)
-BLACK = (0,0,0)
-BLUE = (0,0,255)
+# Colours
+RED = (255, 0, 0)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
-BACKGROUND_COLOUR = WHITE
+BACKGROUND_COLOUR = (40, 41, 35)
 
-#Main menu theme
-main_theme = pygame_menu.themes.THEME_DARK.copy()
-main_theme.title_font_color = (111, 222, 111)
-main_theme.title_font = pmfont.FONT_BEBAS
+# Board
+HEX_RADIUS = 20
+TEXT_OFFSET = 45
+HEX_OFFSET = 95
 
-#Difficulty menu theme
-difficulty_theme = pygame_menu.themes.THEME_DARK.copy()
-difficulty_theme.title_font_color = (111, 222, 111)
-difficulty_theme.title_font = pmfont.FONT_BEBAS
+
+# Game window
+SIZE = 11
+WIDTH = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * SIZE + HEX_RADIUS * SIZE
+HEIGHT = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * SIZE
+MWIDTH = 850.0
+MHEIGHT = 610.0
+GAME_RESOLUTION = (WIDTH, HEIGHT)
+MENU_RESOLUTION = (MWIDTH, MHEIGHT)
+
+
+# Player
+PLAYER_COLORS = [(240, 0, 0), (0, 128, 255), (255, 255, 255)]
+PLAYER_NAMES = {0: "Blue", 1: "Red"}
 
 #About menu theme
 about_theme = pygame_menu.themes.THEME_DARK.copy()
@@ -35,7 +42,6 @@ about_theme.title_font = pmfont.FONT_BEBAS
 about_theme.widget_font_size = 15  # Set the default font size
 about_theme.widget_font = pmfont.FONT_COMIC_NEUE
 
-#About text for the about menu
 about_text = """
 Hex is a two player abstract strategy board game in
 which players attempt to connect opposite sides of a
