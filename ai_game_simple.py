@@ -42,3 +42,7 @@ class AIGame(Game):
                     i, j = random.choice(available_tiles)
                     self.boardMatrix[i][j] = int(self.playerTurn)
                     self.playerTurn = not self.playerTurn
+
+
+# TODO: Implement minimax algorithm
+# TODO: Win on 3x3 board 
