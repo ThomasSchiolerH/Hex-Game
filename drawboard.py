@@ -116,9 +116,10 @@ class Board:
                            y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * i / 6)))
         return points
 
-    def draw_board(self, matrix, screen):
-        self.draw_boarder(screen)
+
+
     def draw_board(self, matrix, screen, winner=None):
+        self.draw_boarder(screen)
         for i in range(self.size):
             for j in range(self.size):
                 x, y = self.get_pixel_coords(i, j)
