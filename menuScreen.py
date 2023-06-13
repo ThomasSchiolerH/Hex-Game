@@ -1,5 +1,3 @@
-import os
-
 import pygame, pygame_menu
 from pygame_menu import themes
 from drawboard import Board
@@ -33,22 +31,38 @@ def show_menu():
     surface = pygame.display.set_mode(MENU_RESOLUTION)
 
 
-    #Menus
+    # Menus
     def start_game():
         gameScreen = pygame.display.set_mode(GAME_RESOLUTION)
         gameScreen.fill(BACKGROUND_COLOUR)
         game = Game(gameScreen)
         game.play()
 
-    def level_menu():
-        mainmenu._open(level)
+    def player_vs_computer_game():
+        # Add your logic here for player vs computer mode
+        print("Not yet implemented")
+        main_menu._open(computer_mode_menu)
+        pass
 
+    def player_vs_player_game():
+        game = Game(screen)
+        game.play()
+
+    """
     def set_difficulty(value, difficulty):
         print(value)
         print(difficulty)
+    """
+    def start_computer_game(difficulty):
+        # Set the game mode
+        game_mode = "computer"
+        # Start the game
+        game = Game(screen)
+        game.set_game_mode(game_mode)
+        game.play()
 
     def about_menu():
-        mainmenu._open(about)
+        main_menu._open(about)
 
     def host_game():
         mpgame = MPGame(menuScreen)
@@ -59,24 +73,37 @@ def show_menu():
         mpgame = MPGame(menuScreen)
         mpgame.join_game()
 
+    # Menu screens
+
+    main_menu = pygame_menu.Menu('Welcome to Hex', WIDTH, HEIGHT, theme=themes.THEME_DARK)
+    game_mode_menu = pygame_menu.Menu('Select Game Mode', WIDTH, HEIGHT, theme=themes.THEME_DARK)
+    computer_mode_menu = pygame_menu.Menu('Select Difficulty', WIDTH, HEIGHT, theme=themes.THEME_DARK)
 
     #Main menu screen
     mainmenu = pygame_menu.Menu('WELCOME TO HEX', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
 
-    # The rest of the buttons
-    play_button = mainmenu.add.button('Play', start_game)
-    host_button = mainmenu.add.button('Host', host_game)
-    join_button = mainmenu.add.button('Join', join_game)
-    level_button = mainmenu.add.button('Computer Level', level_menu)
-    about_button = mainmenu.add.button('About the Game', about_menu)
-    quit_button = mainmenu.add.button('Quit', pygame_menu.events.EXIT)
+    play_button = main_menu.add.button('Play', start_game)
+    host_button = main_menu.add.button('Host', host_game)
+    join_button = main_menu.add.button('Join', join_game)
+    # level_button = main_menu.add.button('Computer Level', level_menu)
+    about_button = main_menu.add.button('About the Game', about_menu)
+    quit_button = main_menu.add.button('Quit', pygame_menu.events.EXIT)
 
-    buttons = [play_button, host_button, join_button, level_button, about_button, quit_button]
+    # Game mode menu buttons
 
-    arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
+    player_vs_player_button = game_mode_menu.add.button('Player vs Player', player_vs_player_game)
+    player_vs_computer_button = game_mode_menu.add.button('Player vs Computer', player_vs_computer_game)
+    back_button = game_mode_menu.add.button('Back', pygame_menu.events.BACK)
 
-    level = pygame_menu.Menu('Select a Difficulty', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
-    level.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2), ('Medium', 3)], onchange=set_difficulty)
+    # Computer game menu buttons
+
+    easy_button = computer_mode_menu.add.button('Easy', lambda: start_computer_game('easy'))
+    medium_button = computer_mode_menu.add.button('Medium', lambda: player_vs_computer_game('medium'))
+    hard_button = computer_mode_menu.add.button('Hard', lambda: player_vs_computer_game('hard'))
+    back_button = computer_mode_menu.add.button('Back', pygame_menu.events.BACK)
+
+    # level = pygame_menu.Menu('Select a Difficulty', WIDTH, HEIGHT, theme=themes.THEME_DARK)
+    # level.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2), ('Medium', 3)], onchange=set_difficulty)
     arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
     about = pygame_menu.Menu('About Hex', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
@@ -85,8 +112,6 @@ def show_menu():
     host = pygame_menu.Menu('Host a new game', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
 
     join = pygame_menu.Menu('Join game', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
-
-
 
     while True:
         events = pygame.event.get()

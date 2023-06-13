@@ -31,7 +31,7 @@ MENU_RESOLUTION = (MWIDTH, MHEIGHT)
 
 # Player
 PLAYER_COLORS = [(240, 0, 0), (0, 128, 255), (255, 255, 255)]
-
+PLAYER_NAMES = {0: "Blue", 1: "Red"}
 
 about_text = """
 Hex is a two player abstract strategy board game in
