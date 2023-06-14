@@ -3,7 +3,7 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 from game import Game
 import pygame, numpy
-from menuScreen import show_menu
+from menu_screen import show_menu
 
 
 def main():

@@ -4,7 +4,7 @@ from drawboard import Board
 
 from game import Game
 from MPGame import MPGame
-from AIGame import AIGame
+from ai_game_simple import AIGame
 from constants import *
 
 
