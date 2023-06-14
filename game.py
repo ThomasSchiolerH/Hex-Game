@@ -1,4 +1,4 @@
-from constants import SIZE
+from constants import SIZE, BACKGROUND_COLOUR, GAME_RESOLUTION
 from drawboard import Board
 import pygame
 import sys
@@ -10,6 +10,32 @@ class Game:
         self.playerTurn = True
         self.screen = screen
         self.boardMatrix = [[-1 for _ in range(SIZE)] for _ in range(SIZE)]
+        self.winner = None  # Winner attribute to store the winning player
+        self.winner_found = False  # Flag to indicate if a winner is found
+
+    def display_winner_box(self, winner):
+        # Create a font and render the winner text
+        font = pygame.font.Font(None, 48)
+        text = font.render(f"Player {winner} wins!", True, (255, 255, 255))
+
+        # Calculate the dimensions and position of the box
+        box_width = text.get_width() + 20
+        box_height = text.get_height() + 20
+        box_x = (GAME_RESOLUTION[0] - box_width) // 2
+        box_y = (GAME_RESOLUTION[1] - box_height) // 2
+
+        # Draw the box
+        pygame.draw.rect(self.screen, (0, 0, 0), (box_x, box_y, box_width, box_height))
+        pygame.draw.rect(self.screen, (255, 255, 255), (box_x, box_y, box_width, box_height), 2)
+
+        # Calculate the position of the text
+        text_x = box_x + (box_width - text.get_width()) // 2
+        text_y = box_y + (box_height - text.get_height()) // 2
+
+        # Blit the text onto the screen
+        self.screen.blit(text, (text_x, text_y))
+
+        pygame.display.flip()
 
     def event_handler(self):
         running = True
@@ -24,10 +50,20 @@ class Game:
                     if pos is not None:
                         self.turn(*pos)
                         # Check if the current player has won
-                        if self.check_win_condition(
-                                int(not self.playerTurn)):  # Check if current player has won - uses opposite player
+                        if self.check_win_condition(int(not self.playerTurn)):
                             print(f"Player {int(self.playerTurn)} wins!")
-                    self.board.draw_board(self.boardMatrix, self.screen)
+                            self.winner = int(self.playerTurn)
+                            self.winner_found = True
+
+            # Check if a winner is found and display the box with text
+            if self.winner_found:
+                self.display_winner_box(self.winner)
+            else:
+                # Draw the game board if no winner is found
+                self.board.draw_board(self.boardMatrix, self.screen)
+
+            pygame.display.update()  # Update the display
+
         pygame.quit()
         sys.exit()
 
@@ -59,7 +95,7 @@ class Game:
 
         return False
 
-    # All possible ways to palce connecting tile
+    # All possible ways to place connecting tile
     NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
     def dfs(self, i, j, player, visited, connected):
         # Check out of bounds
@@ -70,15 +106,15 @@ class Game:
         visited[i][j] = True
         connected.add((i, j))
 
-        if player == 0 and j == SIZE - 1: # Blue player and right most tile
+        if player == 0 and j == SIZE - 1: # Blue player and rightmost tile
             return True
-        elif player == 1 and i == SIZE - 1: # Red player and bottom must tile
+        elif player == 1 and i == SIZE - 1: # Red player and bottom-most tile
             return True
 
         for dx, dy in self.NEIGHBOR_OFFSETS:
             ni, nj = i + dx, j + dy
-            if self.dfs(ni, nj, player, visited, connected): # dfs from each neighbor tile
-                return True # A win ahs been found
+            if self.dfs(ni, nj, player, visited, connected): # dfs from each neighboring tile
+                return True # A win has been found
 
         return False
 
@@ -89,6 +125,3 @@ class Game:
         pygame.display.update()
         self.clock.tick(30)
         self.event_handler()
-
-
-
