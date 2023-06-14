@@ -6,6 +6,7 @@ from game import Game
 #from MPGame import MPGame
 from ai_game_simple import AIGame
 from constants import *
+from mp_game import MPGame
 
 
 def show_menu():
