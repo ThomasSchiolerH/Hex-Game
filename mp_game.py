@@ -63,7 +63,7 @@ class MPGame(Game):
         active = False
         #"25.53.14.230", 9000
         #25.63.154.249
-        text = "25.53.14.230:9000"
+        text = ""
         done = False
 
         while not done:
@@ -110,7 +110,7 @@ class MPGame(Game):
         #hostname = socket.gethostname()
         #IPAddr = socket.gethostbyname(hostname)
         #print(IPAddr)
-        self.socket.bind(("25.61.16.232", 9000))
+        self.socket.bind((SERVER_IP, 9000))
         
         self.await_for_joining_player()
         
@@ -126,7 +126,7 @@ class MPGame(Game):
         self.event_handler()
 
     def join_game(self):
-        self.socket.bind(("25.61.16.232", 9001))
+        self.socket.bind((SERVER_IP, 9001))
         self.await_join_confirmation()
         
         self.board = Board(self.size)
@@ -169,6 +169,11 @@ class MPGame(Game):
             try:
                 self.conn = self.get_host()
                 self.socket.sendto(bytes("join", "utf-8"), self.conn)
+            except TimeoutError:
+                pass
+        while self.size is None:
+            pygame.event.get()
+            try:
                 bsize, _ = self.socket.recvfrom(5)
                 bsize = bsize.decode("utf-8", "strict")
                 self.size = int(bsize)

@@ -10,7 +10,8 @@ from mp_game import MPGame
 from ai_game_simple import SimpleAIGame
 from ai_game_advanced import AdvancedAIGame
 
-from constants import *
+from constants import MENU_RESOLUTION, WINDOW_NAME, BACKGROUND_COLOUR
+from constants import HEX_RADIUS, HEX_OFFSET, MWIDTH, MHEIGHT, WHITE
 
 
 def show_menu():
@@ -22,11 +23,8 @@ def show_menu():
     # Fill window background with the chosen colour
     menuScreen.fill(BACKGROUND_COLOUR)
 
-
     # Update window
     pygame.display.flip()
-    # Keep window running
-    running = True
 
     surface = pygame.display.set_mode(MENU_RESOLUTION)
 
@@ -43,9 +41,9 @@ def show_menu():
     def start_computer_game(difficulty, gameSize):
         mainmenu._open(computer_mode_menu)
         gameScreen = get_game_screen(get_game_screen)
-        if (difficulty == "easy"):
+        if difficulty == "easy":
             aiGame = SimpleAIGame(gameScreen, gameSize)
-        elif (difficulty == "hard"):
+        elif difficulty == "hard":
             aiGame = AdvancedAIGame(gameScreen, gameSize)
         aiGame.play()
 
@@ -54,7 +52,7 @@ def show_menu():
         gameScreen = pygame.display.set_mode(boardSize)
         gameScreen.fill(BACKGROUND_COLOUR)
         return gameScreen
-    
+
     def init_screen(mode):
         gameSize = 0
         try:
@@ -72,8 +70,8 @@ def show_menu():
             elif mode == "host":
                 host_game(gameSize)
             elif mode == "join":
-                join_game()      
-        
+                join_game()
+
     def getGameResolution(size):
         width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size
         height = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size
@@ -87,47 +85,59 @@ def show_menu():
         mpgame = MPGame(menuScreen, size)
         mpgame.host_game()
 
-
     def join_game():
-        mpgame = MPGame(menuScreen, 0)
+        mpgame = MPGame(menuScreen, None)
         mpgame.join_game()
 
     # Menu screens
-    game_mode_menu = pygame_menu.Menu('Select Game Mode', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
-    computer_mode_menu = pygame_menu.Menu('Select Difficulty', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
+    game_mode_menu = pygame_menu.Menu(
+        "Select Game Mode", MWIDTH, MHEIGHT, theme=themes.THEME_DARK
+    )
+    computer_mode_menu = pygame_menu.Menu(
+        "Select Difficulty", MWIDTH, MHEIGHT, theme=themes.THEME_DARK
+    )
 
     # Main menu screen
-    mainmenu = pygame_menu.Menu('WELCOME TO HEX', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
+    mainmenu = pygame_menu.Menu(
+        "WELCOME TO HEX", MWIDTH, MHEIGHT, theme=themes.THEME_DARK
+    )
 
     # Menu buttons
-    play_button = mainmenu.add.button('Play', game_mode_menu)
-    about_button = mainmenu.add.button('About the Game', about_menu)
-    quit_button = mainmenu.add.button('Quit', pygame_menu.events.EXIT)
+    play_button = mainmenu.add.button("Play", game_mode_menu)
+    about_button = mainmenu.add.button("About the Game", about_menu)
+    quit_button = mainmenu.add.button("Quit", pygame_menu.events.EXIT)
 
     # Game mode menu buttons
-    boardSizeLabel = game_mode_menu.add.label("Choose a board Size between 2-20")
+    boardSizeLabel = game_mode_menu.add.label("Choose a board Size between 2- 20")
     boardSizeField = game_mode_menu.add.text_input("")
     boardSizeField.set_border(1, WHITE)
     boardSizeField.set_padding((0, 60, 0, 60))
     boardSizeField.set_margin(0, 60)
 
-    player_vs_player_button = game_mode_menu.add.button('Player vs Player', lambda: init_screen('pvp'))
-    player_vs_computer_button = game_mode_menu.add.button('Player vs Computer', lambda: init_screen('pve'))
-    host_button = game_mode_menu.add.button('Host', lambda: init_screen('host'))
-    join_button = game_mode_menu.add.button('Join', lambda: join_game())
+    player_vs_player_button = game_mode_menu.add.button(
+        "Player vs Player", lambda: init_screen("pvp")
+    )
+    player_vs_computer_button = game_mode_menu.add.button(
+        "Player vs Computer", lambda: init_screen("pve")
+    )
+    host_button = game_mode_menu.add.button("Host", lambda: init_screen("host"))
+    join_button = game_mode_menu.add.button("Join", lambda: join_game())
 
     # Computer Ai buttons
-    easy_button = computer_mode_menu.add.button('Easy', lambda: start_computer_game('easy', int(boardSizeField.get_value())))
-    hard_button = computer_mode_menu.add.button('Hard', lambda: start_computer_game('hard', int(boardSizeField.get_value())))
-
+    easy_button = computer_mode_menu.add.button(
+        "Easy", lambda: start_computer_game("easy", int(boardSizeField.get_value()))
+    )
+    hard_button = computer_mode_menu.add.button(
+        "Hard", lambda: start_computer_game("hard", int(boardSizeField.get_value()))
+    )
 
     arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
-    about = pygame_menu.Menu('About Hex', MWIDTH, MHEIGHT, theme=about_theme)
+    about = pygame_menu.Menu("About Hex", MWIDTH, MHEIGHT, theme=about_theme)
     about.add.label(about_text)
 
-    host = pygame_menu.Menu('Host a new game', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
-    join = pygame_menu.Menu('Join game', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
+    host = pygame_menu.Menu("Host a new game", MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
+    join = pygame_menu.Menu("Join game", MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
 
     while True:
         events = pygame.event.get()

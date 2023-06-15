@@ -1,10 +1,8 @@
-import pygame.display
-import pygame_menu, pygame_menu.font as pmfont
+import pygame_menu
+import pygame_menu.font as pmfont
 
 # Multiplayer
 PORT = 9009
-
-
 
 WINDOW_NAME = "HEX BOARD GAME"
 
@@ -14,7 +12,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
-WINCOLORS= [(0, 106, 209), (191, 0, 0)]
+WINCOLORS = [(0, 106, 209), (191, 0, 0)]
 BACKGROUND_COLOUR = (40, 41, 35)
 
 # Board
@@ -23,8 +21,12 @@ TEXT_OFFSET = 45
 HEX_OFFSET = 95
 
 
+# Multiplayer
+SERVER_IP = "25.61.16.232"
+
 # Game window
 SIZE = 3
+
 MWIDTH = 850.0
 MHEIGHT = 610.0
 MENU_RESOLUTION = (MWIDTH, MHEIGHT)
@@ -34,7 +36,7 @@ MENU_RESOLUTION = (MWIDTH, MHEIGHT)
 PLAYER_COLORS = [(240, 0, 0), (0, 128, 255), (255, 255, 255)]
 PLAYER_NAMES = {0: "Blue", 1: "Red"}
 
-#About menu theme
+# About menu theme
 about_theme = pygame_menu.themes.THEME_DARK.copy()
 about_theme.title_font_color = (111, 222, 111)
 about_theme.title_font = pmfont.FONT_BEBAS

@@ -57,6 +57,7 @@ class Board:
         rightRowCorners.append(topRowCorners[len(topRowCorners) - 1])
         rightRowCorners.append(topRowCorners[len(topRowCorners) - 2])
         rightRowCorners.extend(self.findPolygonPoints("rightRowCorners"))
+        print(rightRowCorners)
         rightRowCorners.pop(2)
         rightRowCorners.append((cornerCoords[3][0] + (HEX_RADIUS * borderSize) * cos(radians(90) + 2 * pi * 5 / 6),
                         cornerCoords[3][1] + (HEX_RADIUS * borderSize) * sin(radians(90) + 2 * pi * 5 / 6)))
@@ -90,6 +91,7 @@ class Board:
                 color = 0
 
     def findPolygonPoints(self, cornerArray):
+        print("before find poly ", self.size)
         points = []
         if cornerArray == "topRowCorners":
             for i in range(self.size):
