@@ -119,6 +119,7 @@ class Board:
 
 
     def draw_board(self, matrix, screen):
+        screen.fill(BACKGROUND_COLOUR)
         self.draw_border(screen)
         for i in range(self.size):
             for j in range(self.size):
@@ -126,11 +127,13 @@ class Board:
                 self.hexagon(x, y, screen, PLAYER_COLORS[matrix[i][j]])
         pygame.display.update()
 
-    def draw_winner_message(self, screen, winner):
-        font = pygame.font.Font(None, 36)
-        text_surface = font.render(winner, True, BLACK)
-        text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT - 50))
-        screen.blit(text_surface, text_rect)
+    def display_message(self, message, x_disp, y_disp, color, screen):
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        text_surf = font.render(message, True, color)
+        text_rect = text_surf.get_rect()
+        text_rect = x_disp, y_disp
+        screen.blit(text_surf, text_rect)
+        pygame.display.update()
 
 
 

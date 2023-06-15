@@ -99,6 +99,7 @@ class MPGame(Game):
     def host_game(self):
         self.screen.fill(BACKGROUND_COLOUR)
         pygame.display.update()
+        self.board.display_message("Waiting for player to join...", 20, 90, WHITE, self.screen)
         hostname = socket.gethostname()
         IPAddr = socket.gethostbyname(hostname)
         print(IPAddr)
@@ -145,3 +146,4 @@ class MPGame(Game):
                 self.playerTurn = True
             except TimeoutError:
                 pass
+    
