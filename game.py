@@ -16,7 +16,11 @@ class Game:
     def display_winner_box(self, winner):
         # Create a font and render the winner text
         font = pygame.font.Font(None, 48)
-        text = font.render(f"Player {winner} wins!", True, (255, 255, 255))
+        if winner == 0:
+            text = font.render(f"Blue Player wins!", True, (255, 255, 255))
+        else:
+            text = font.render(f"Red Player wins!", True, (255, 255, 255))
+        #text = font.render(f"Player {winner} wins!", True, (255, 255, 255))
 
         # Calculate the dimensions and position of the box
         box_width = text.get_width() + 20
