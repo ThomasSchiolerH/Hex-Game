@@ -1,11 +1,19 @@
 import random
-import time
 from game import Game
 from constants import SIZE
 
 class SimpleAIGame(Game):
     def __init__(self, screen):
         super().__init__(screen)
+<<<<<<< HEAD
+        self.playerTurn = False
+        self.turn(0,0)
+
+    def turn(self, i, j):
+        if self.playerTurn:
+            super().turn(i, j)
+        if not self.playerTurn:
+=======
         if SIZE == 3:
             self.boardMatrix[1][1] = int(self.playerTurn)
             self.playerTurn = not self.playerTurn
@@ -23,11 +31,19 @@ class SimpleAIGame(Game):
         if SIZE == 3:
             self.three_stategy(i,j)
         else:
+>>>>>>> origin/main
             available_tiles = []
             for i in range(SIZE):
                 for j in range(SIZE):
                     if self.boardMatrix[i][j] == -1:
                         available_tiles.append((i, j))
+<<<<<<< HEAD
+            if available_tiles:
+                i, j = random.choice(available_tiles)
+                self.boardMatrix[i][j] = int(self.playerTurn)
+            self.playerTurn = True
+
+=======
 
             if available_tiles:
                 i, j = random.choice(available_tiles)
@@ -98,3 +114,4 @@ class SimpleAIGame(Game):
         else:
             self.boardMatrix[i][j] = int(self.playerTurn)
         self.playerTurn = not self.playerTurn
+>>>>>>> origin/main

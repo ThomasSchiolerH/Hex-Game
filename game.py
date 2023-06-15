@@ -64,7 +64,11 @@ class Game:
                         self.turn(*pos)
                         self.board.draw_board(self.boardMatrix, self.screen)
                         # Check if the current player has won
+<<<<<<< HEAD
+                        if self.check_win_condition(int(not self.playerTurn)):  # Check if current player has won - uses opposite player
+=======
                         if self.check_win_condition(int(not self.playerTurn)):
+>>>>>>> origin/main
                             print(f"Player {int(self.playerTurn)} wins!")
                             self.winner = int(self.playerTurn)
                             self.winner_found = True
@@ -73,7 +77,7 @@ class Game:
             pygame.display.update()  # Update the display
 
         pygame.quit()
-        sys.exit()
+        sys.exit(0)
 
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:

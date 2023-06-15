@@ -4,8 +4,12 @@ from drawboard import Board
 
 from game import Game
 from mp_game import MPGame
+<<<<<<< HEAD
+from ai_game_simple import AIGame
+=======
 from ai_game_simple import SimpleAIGame
 from ai_game_advanced import AdvancedAIGame
+>>>>>>> origin/main
 from constants import *
 
 
