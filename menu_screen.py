@@ -4,7 +4,12 @@ from drawboard import Board
 
 from game import Game
 from mp_game import MPGame
+<<<<<<< HEAD
 from ai_game_simple import AIGame
+=======
+from ai_game_simple import SimpleAIGame
+from ai_game_advanced import AdvancedAIGame
+>>>>>>> origin/main
 from constants import *
 
 
@@ -57,7 +62,7 @@ def show_menu():
     def start_computer_game(difficulty):
         gameScreen = pygame.display.set_mode(GAME_RESOLUTION)
         gameScreen.fill(BACKGROUND_COLOUR)
-        ai_game = AIGame(gameScreen)
+        ai_game = SimpleAIGame(gameScreen)
         ai_game.play()
 
     def about_menu():
@@ -72,11 +77,18 @@ def show_menu():
         mpgame = MPGame(menuScreen)
         mpgame.join_game()
 
-    def test_ai_game():
+    def test_simple_ai_game():
         gameScreen = pygame.display.set_mode(GAME_RESOLUTION)
         gameScreen.fill(BACKGROUND_COLOUR)
-        ai_game = AIGame(gameScreen)
+        ai_game = SimpleAIGame(gameScreen)
         ai_game.play()
+    
+    def test_advanced_ai_game():
+        gameScreen = pygame.display.set_mode(GAME_RESOLUTION)
+        gameScreen.fill(BACKGROUND_COLOUR)
+        ai_game = AdvancedAIGame(gameScreen)
+        ai_game.play()
+
 
     # Menu screens
     game_mode_menu = pygame_menu.Menu('Select Game Mode', MWIDTH, MHEIGHT, theme=themes.THEME_DARK)
@@ -100,7 +112,8 @@ def show_menu():
 
     # Computer game menu buttons
 
-    test_ai_button = mainmenu.add.button('Test AI Game', test_ai_game)
+    test_simple_ai_button = mainmenu.add.button('Test simple AI Game', test_simple_ai_game)
+    test_advanced_ai_button = mainmenu.add.button('Test advanced AI Game', test_advanced_ai_game)
 
 
 
