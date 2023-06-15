@@ -122,7 +122,7 @@ def show_menu():
         "Player vs Computer", lambda: init_screen("pve")
     )
     host_button = game_mode_menu.add.button("Host", lambda: init_screen("host"))
-    join_button = game_mode_menu.add.button("Join", lambda: join_game())
+    join_button = game_mode_menu.add.button("Join", lambda: init_screen("join"))
 
     # Computer Ai buttons
     easy_button = computer_mode_menu.add.button(
