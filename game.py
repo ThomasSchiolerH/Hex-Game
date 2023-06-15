@@ -84,7 +84,9 @@ class Game:
         self.playerTurn = True
         self.winner = None
         self.winner_found = False
-        self.board.draw_board(self.boardMatrix, self.screen)
+        self.screen.fill(BACKGROUND_COLOUR)  # Clear the screen
+        self.board.draw_board(self.boardMatrix, self.screen)  # Redraw the game board
+
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn) # integer 0 or 1 depending on turn - update matrix
