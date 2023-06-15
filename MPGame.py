@@ -10,11 +10,11 @@ import sys
 
 class MPGame:
     def __init__(self, screen):
-        self.board = Board(SIZE)
+        self.board = Board(size)
         self.clock = pygame.time.Clock()
         self.playerTurn = False
         self.screen = screen
-        self.boardMatrix = [[-1 for i in range(SIZE)] for j in range(SIZE)]
+        self.boardMatrix = [[-1 for i in range(size)] for j in range(size)]
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.host = None
 

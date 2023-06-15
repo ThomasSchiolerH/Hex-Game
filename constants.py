@@ -1,3 +1,4 @@
+import pygame.display
 import pygame_menu, pygame_menu.font as pmfont
 
 # Multiplayer
@@ -13,6 +14,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
+WINCOLORS= [(0, 106, 209), (191, 0, 0)]
 BACKGROUND_COLOUR = (40, 41, 35)
 
 # Board
@@ -22,12 +24,8 @@ HEX_OFFSET = 95
 
 
 # Game window
-SIZE = 5
-WIDTH = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * SIZE + HEX_RADIUS * SIZE
-HEIGHT = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * SIZE
 MWIDTH = 850.0
 MHEIGHT = 610.0
-GAME_RESOLUTION = (WIDTH, HEIGHT)
 MENU_RESOLUTION = (MWIDTH, MHEIGHT)
 
 

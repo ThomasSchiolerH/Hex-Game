@@ -1,14 +1,13 @@
 import random
 import time
 from game import Game
-from constants import SIZE
 
 class AIGame(Game):
-    def __init__(self, screen):
-        super().__init__(screen)
+    def __init__(self, screen, size):
+        super().__init__(screen, size)
         available_tiles = []
-        for i in range(SIZE):
-            for j in range(SIZE):
+        for i in range(self.size):
+            for j in range(self.size):
                 if self.boardMatrix[i][j] == -1:
                     available_tiles.append((i, j))
 
@@ -24,8 +23,8 @@ class AIGame(Game):
 
             if not self.playerTurn:
                 available_tiles = []
-                for i in range(SIZE):
-                    for j in range(SIZE):
+                for i in range(self.size):
+                    for j in range(self.size):
                         if self.boardMatrix[i][j] == -1:
                             available_tiles.append((i, j))
                 if available_tiles:
@@ -34,8 +33,8 @@ class AIGame(Game):
                     self.playerTurn = not self.playerTurn
             elif self.playerTurn:
                 available_tiles = []
-                for i in range(SIZE):
-                    for j in range(SIZE):
+                for i in range(self.size):
+                    for j in range(self.size):
                         if self.boardMatrix[i][j] == -1:
                             available_tiles.append((i, j))
                 if available_tiles:

@@ -116,6 +116,12 @@ class Board:
                            y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * i / 6)))
         return points
 
+    def colorWinPath(self, path, screen, playerColor):
+            for point in path:
+                x, y = self.get_pixel_coords(point[0], point[1])
+                self.hexagon(x, y, screen, playerColor)
+
+            pygame.display.update()
 
 
     def draw_board(self, matrix, screen, winner = None):
@@ -133,6 +139,7 @@ class Board:
             text_surface = font.render(winner, True, BLACK)
             text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT - 50))
             screen.blit(text_surface, text_rect)
+
     def get_clicked_tile(self, mouse_pos):
         x, y = mouse_pos
         for i in range(self.size):
