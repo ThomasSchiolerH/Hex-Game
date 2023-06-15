@@ -1,4 +1,3 @@
-from math import dist
 import socket
 from constants import *
 from sys import argv
@@ -10,12 +9,13 @@ import sys
 
 
 class MPGame(Game):
-    def __init__(self, screen):
-        self.board = Board(SIZE)
+    def __init__(self, screen, size):
+        self.size = size
+        self.board = None
         self.clock = pygame.time.Clock()
         self.playerTurn = False
         self.screen = screen
-        self.boardMatrix = [[-1 for i in range(SIZE)] for j in range(SIZE)]
+        self.boardMatrix = []
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.conn = None
         self.socket.settimeout(0.001)
@@ -46,8 +46,13 @@ class MPGame(Game):
             self.board.draw_board(self.boardMatrix, self.screen)
             if self.check_win_condition(int(not self.playerTurn)): 
                 print(f"Player {int(self.playerTurn)} wins!")
+                self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
+                self.board.display_winner_box(self.playerTurn, self.screen)
             if self.check_win_condition(int(self.playerTurn)):  
-                print(f"Player {int(not self.playerTurn)} wins!")
+                print(f"Player {int(self.playerTurn)} wins!")
+                self.board.colorWinPath(self.connected, self.screen, WINCOLORS[not self.playerTurn])
+                self.board.display_winner_box(not self.playerTurn, self.screen)
+
 
     def get_host(self):
         font = pygame.font.Font(None, 32)
@@ -56,7 +61,9 @@ class MPGame(Game):
         color_active = pygame.Color('dodgerblue2')
         color = color_inactive
         active = False
-        text = "localhost:9000"
+        #"25.53.14.230", 9000
+        #25.63.154.249
+        text = "25.53.14.230:9000"
         done = False
 
         while not done:
@@ -99,22 +106,31 @@ class MPGame(Game):
     def host_game(self):
         self.screen.fill(BACKGROUND_COLOUR)
         pygame.display.update()
-        self.board.display_message("Waiting for player to join...", 20, 90, WHITE, self.screen)
-        hostname = socket.gethostname()
-        IPAddr = socket.gethostbyname(hostname)
-        print(IPAddr)
-        self.socket.bind(("localhost", 9000))
+        
+        #hostname = socket.gethostname()
+        #IPAddr = socket.gethostbyname(hostname)
+        #print(IPAddr)
+        self.socket.bind(("25.61.16.232", 9000))
+        
         self.await_for_joining_player()
+        
+        self.socket.sendto(bytes("{}".format((self.size)), "utf-8"), self.conn)
+        
+        self.board = Board(self.size)
+        self.boardMatrix = [[-1 for i in range(self.size)] for j in range(self.size)]
         self.host = True
+        self.board.display_message("Waiting for player to join...", 20, 90, WHITE, self.screen)
 
         self.board.draw_board(self.boardMatrix, self.screen)
         self.clock.tick(30)
         self.event_handler()
 
     def join_game(self):
-        self.socket.bind(("localhost", 9001))
-        self.conn = self.get_host()
-        self.socket.sendto(bytes("join", "utf-8"), self.conn)
+        self.socket.bind(("25.61.16.232", 9001))
+        self.await_join_confirmation()
+        
+        self.board = Board(self.size)
+        self.boardMatrix = [[-1 for i in range(self.size)] for j in range(self.size)]
         
         self.board.draw_board(self.boardMatrix, self.screen)
 
@@ -144,6 +160,19 @@ class MPGame(Game):
             try:
                 _, self.conn = self.socket.recvfrom(4)
                 self.playerTurn = True
+            except TimeoutError:
+                pass
+    
+    def await_join_confirmation(self):
+        while self.conn is None:
+            pygame.event.get()
+            try:
+                self.conn = self.get_host()
+                self.socket.sendto(bytes("join", "utf-8"), self.conn)
+                bsize, _ = self.socket.recvfrom(5)
+                bsize = bsize.decode("utf-8", "strict")
+                self.size = int(bsize)
+                self.board = Board(self.size)
             except TimeoutError:
                 pass
     

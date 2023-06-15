@@ -117,11 +117,10 @@ class Board:
         return points
 
     def colorWinPath(self, path, screen, playerColor):
-            for point in path:
-                x, y = self.get_pixel_coords(point[0], point[1])
-                self.hexagon(x, y, screen, playerColor)
-
-            pygame.display.update()
+        for point in path:
+            x, y = self.get_pixel_coords(point[0], point[1])
+            self.hexagon(x, y, screen, playerColor)
+        pygame.display.update()
 
 
     def draw_board(self, matrix, screen):
@@ -134,22 +133,6 @@ class Board:
         pygame.display.update()
 
 
-    def draw_winner_message(self, screen, winner):
-        if winner:
-            font = pygame.font.Font(None, 36)
-            text_surface = font.render(winner, True, BLACK)
-            text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT - 50))
-            screen.blit(text_surface, text_rect)
-
-    def get_clicked_tile(self, mouse_pos):
-        x, y = mouse_pos
-        for i in range(self.size):
-            for j in range(self.size):
-                px, py = self.get_pixel_coords(i, j)
-                dist = ((x - px) ** 2 + (y - py) ** 2) ** 0.5
-                if dist <= HEX_RADIUS:
-                    return i, j
-        return None, None
 
     def display_message(self, message, x_disp, y_disp, color, screen):
         font = pygame.font.Font('freesansbold.ttf', 32)
@@ -158,7 +141,49 @@ class Board:
         text_rect = x_disp, y_disp
         screen.blit(text_surf, text_rect)
         pygame.display.update()
+        
+    def getGameResolution(self, size):
+        width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size
+        height = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size
 
+        return (width, height)
 
+    def display_winner_box(self, winner, screen):
+        # Create a font and render the winner text
+        font = pygame.font.Font(None, 48)
+        if not winner:
+            text = font.render(f"Blue Player wins!", True, (255, 255, 255))
+        else:
+            text = font.render(f"Red Player wins!", True, (255, 255, 255))
+
+        # Calculate the dimensions and position of the box
+        box_width = text.get_width() + 20
+        box_height = text.get_height() + 20
+        width, height = self.getGameResolution(self.size)
+        box_x = (width - box_width) // 2
+        box_y = (height - box_height) // 2
+
+        # Create a transparent surface for the box
+        box_surface = pygame.Surface((box_width, box_height), pygame.SRCALPHA)
+        border_surface = pygame.Surface((box_width, box_height), pygame.SRCALPHA)
+        text_surface = pygame.Surface(text.get_size(), pygame.SRCALPHA)
+
+        # Set the desired transparency -> 128 = 50%
+        alpha_value = 128
+
+        # Fill the surfaces with the desired transparency
+        box_surface.fill((0, 0, 0, alpha_value))
+        border_surface.fill((255, 255, 255, alpha_value))
+        text_surface.fill((255, 255, 255, alpha_value))
+
+        # Draw the border onto the box surface
+        pygame.draw.rect(box_surface, (255, 255, 255, alpha_value), (0, 0, box_width, box_height), 2)
+
+        # Blit the box, border, and text onto the screen
+        screen.blit(box_surface, (box_x, box_y))
+        screen.blit(border_surface, (box_x, box_y))
+        screen.blit(text, (box_x + 10, box_y + 10))
+
+        pygame.display.flip()
 
 
