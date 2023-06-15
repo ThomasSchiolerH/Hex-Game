@@ -1,18 +1,19 @@
 import random
 import time
 from game import Game
-from constants import SIZE
+
 
 class AdvancedAIGame(Game):
-    def __init__(self, screen):
-        super().__init__(screen)
-        if SIZE == 3:
+    def __init__(self, screen, size):
+        super().__init__(screen, size)
+        self.self = size
+        if self.size == 3:
             self.boardMatrix[1][1] = int(self.playerTurn)
             self.playerTurn = not self.playerTurn
         else:
             available_tiles = []
-            for i in range(SIZE):
-                for j in range(SIZE):
+            for i in range(self.size):
+                for j in range(self.size):
                     if self.boardMatrix[i][j] == -1:
                         available_tiles.append((i, j))
 
@@ -28,8 +29,8 @@ class AdvancedAIGame(Game):
 
             if not self.playerTurn:
                 available_tiles = []
-                for i in range(SIZE):
-                    for j in range(SIZE):
+                for i in range(self.size):
+                    for j in range(self.size):
                         if self.boardMatrix[i][j] == -1:
                             available_tiles.append((i, j))
                 if available_tiles:
@@ -39,8 +40,8 @@ class AdvancedAIGame(Game):
             elif self.playerTurn:
                 best_score = float('-inf')
                 best_move = None
-                for i in range(SIZE):
-                    for j in range(SIZE):
+                for i in range(self.size):
+                    for j in range(self.size):
                         if self.boardMatrix[i][j] == -1:
                             self.boardMatrix[i][j] = int(self.playerTurn)
                             score = self.minimax(3, False)
@@ -60,15 +61,15 @@ class AdvancedAIGame(Game):
     def check_win_condition(self, player):
         # Check if valid player and give player side
         if player == 0:  # Blue player
-            start_side, end_side = 0, SIZE - 1
+            start_side, end_side = 0, self.size - 1
         elif player == 1:  # Red player
-            start_side, end_side = 0, SIZE - 1
+            start_side, end_side = 0, self.size - 1
         else:
             return False
 
         #Visited tiles stored in 2d list - use DFS so no tiles are visited twice
-        visited = [[False for _ in range(SIZE)] for _ in range(SIZE)] # Set all false to start
-        for i in range(SIZE):
+        visited = [[False for _ in range(self.size)] for _ in range(self.size)] # Set all false to start
+        for i in range(self.size):
             if player == 0:
                 if self.boardMatrix[i][start_side] == player: # Check if the tile is occupied by player 1
                     if self.dfs(i, start_side, player, visited, set()): # DFS from current tile
@@ -84,16 +85,16 @@ class AdvancedAIGame(Game):
     NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
     def dfs(self, i, j, player, visited, connected):
         # Check out of bounds
-        if i < 0 or i >= SIZE or j < 0 or j >= SIZE or self.boardMatrix[i][j] != player or visited[i][j]:
+        if i < 0 or i >= self.size or j < 0 or j >= self.size or self.boardMatrix[i][j] != player or visited[i][j]:
             return False
 
         # Mark current tile as visited
         visited[i][j] = True
         connected.add((i, j))
 
-        if player == 0 and j == SIZE - 1: # Blue player and right most tile
+        if player == 0 and j == self.size - 1: # Blue player and right most tile
             return True
-        elif player == 1 and i == SIZE - 1: # Red player and bottom must tile
+        elif player == 1 and i == self.size - 1: # Red player and bottom must tile
             return True
 
         for dx, dy in self.NEIGHBOR_OFFSETS:
@@ -109,8 +110,8 @@ class AdvancedAIGame(Game):
 
         if maximizingPlayer:
             maxEval = float('-inf')
-            for i in range(SIZE):
-                for j in range(SIZE):
+            for i in range(self.size):
+                for j in range(self.size):
                     if self.boardMatrix[i][j] == -1:
                         self.boardMatrix[i][j] = 1
                         eval = self.minimax(depth - 1, False)
@@ -119,8 +120,8 @@ class AdvancedAIGame(Game):
             return maxEval
         else:
             minEval = float('inf')
-            for i in range(SIZE):
-                for j in range(SIZE):
+            for i in range(self.size):
+                for j in range(self.size):
                     if self.boardMatrix[i][j] == -1:
                         self.boardMatrix[i][j] = 0
                         eval = self.minimax(depth - 1, True)
@@ -131,14 +132,14 @@ class AdvancedAIGame(Game):
     def evaluate(self):
         score = 0
         # Check rows
-        for i in range(SIZE):
+        for i in range(self.size):
             if self.boardMatrix[i][0] == self.boardMatrix[i][1] == self.boardMatrix[i][2] == 1:
                 score += 10
             elif self.boardMatrix[i][0] == self.boardMatrix[i][1] == self.boardMatrix[i][2] == 0:
                 score -= 10
 
         # Check columns
-        for j in range(SIZE):
+        for j in range(self.size):
             if self.boardMatrix[0][j] == self.boardMatrix[1][j] == self.boardMatrix[2][j] == 1:
                 score += 10
             elif self.boardMatrix[0][j] == self.boardMatrix[1][j] == self.boardMatrix[2][j] == 0:
