@@ -2,14 +2,10 @@ import os
 
 import pygame, pygame_menu
 from pygame_menu import themes
-from drawboard import Board
-
 from game import Game
 from mp_game import MPGame
-
 from ai_game_simple import SimpleAIGame
 from ai_game_advanced import AdvancedAIGame
-
 from constants import *
 
 
@@ -21,13 +17,6 @@ def show_menu():
     pygame.display.set_caption(WINDOW_NAME)
     # Fill window background with the chosen colour
     menuScreen.fill(BACKGROUND_COLOUR)
-
-    #HVAD GØR DET HER KODE, FORDI MAN KAN IKKE SE DET DER BLIVER SKREVET? TODO
-    # Font
-    #font = pygame.font.SysFont(None, 20)
-    #myfont = pygame.font.SysFont("achelas.tff", 72)  # use default system font, size 10
-    #mytext = myfont.render('HEX', True, (255, 100, 100))
-    #menuScreen.blit(mytext, (MWIDTH * 0.45, 0))  # put the text in top left corner of screen
 
     # Update window
     pygame.display.flip()
