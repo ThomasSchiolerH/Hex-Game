@@ -3,7 +3,7 @@ from pygame_menu import themes
 from drawboard import Board
 
 from game import Game
-from MPGame import MPGame
+from mp_game import MPGame
 from ai_game_simple import AIGame
 from constants import *
 

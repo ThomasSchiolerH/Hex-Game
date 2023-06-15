@@ -24,12 +24,12 @@ class Game:
                     if pos is not None:
                         self.turn(*pos)
                         # Check if the current player has won
-                        if self.check_win_condition(
-                                int(not self.playerTurn)):  # Check if current player has won - uses opposite player
+                        if self.check_win_condition(int(not self.playerTurn)):  # Check if current player has won - uses opposite player
                             print(f"Player {int(self.playerTurn)} wins!")
+                            self.board.draw_winner_message(self.screen, self.playerTurn)
                     self.board.draw_board(self.boardMatrix, self.screen)
         pygame.quit()
-        sys.exit()
+        sys.exit(0)
 
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:

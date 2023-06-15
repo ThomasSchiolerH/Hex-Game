@@ -31,7 +31,7 @@ class Board:
             return None
         return i, j
 
-    def draw_boarder(self, screen):
+    def draw_border(self, screen):
         topRowCorners = []
         leftRowCorners = []
         rightRowCorners = []
@@ -107,8 +107,8 @@ class Board:
             for i in range(self.size):
                 x, y = self.get_pixel_coords(0, i)
                 points.extend(self.hexagonPoints(x, y, [2, 1, 0]))
-
         return points
+    
     def hexagonPoints(self, x, y, edges):
         points = []
         for i in edges:
@@ -118,29 +118,19 @@ class Board:
 
 
 
-    def draw_board(self, matrix, screen, winner = None):
-        self.draw_boarder(screen)
+    def draw_board(self, matrix, screen):
+        self.draw_border(screen)
         for i in range(self.size):
             for j in range(self.size):
                 x, y = self.get_pixel_coords(i, j)
                 self.hexagon(x, y, screen, PLAYER_COLORS[matrix[i][j]])
-        self.draw_winner_message(screen, winner)
         pygame.display.update()
 
     def draw_winner_message(self, screen, winner):
-        if winner:
-            font = pygame.font.Font(None, 36)
-            text_surface = font.render(winner, True, BLACK)
-            text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT - 50))
-            screen.blit(text_surface, text_rect)
-    def get_clicked_tile(self, mouse_pos):
-        x, y = mouse_pos
-        for i in range(self.size):
-            for j in range(self.size):
-                px, py = self.get_pixel_coords(i, j)
-                dist = ((x - px) ** 2 + (y - py) ** 2) ** 0.5
-                if dist <= HEX_RADIUS:
-                    return i, j
-        return None, None
+        font = pygame.font.Font(None, 36)
+        text_surface = font.render(winner, True, BLACK)
+        text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT - 50))
+        screen.blit(text_surface, text_rect)
+
 
 
