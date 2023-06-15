@@ -26,7 +26,7 @@ class Game:
                         # Check if the current player has won
                         if self.check_win_condition(int(not self.playerTurn)):  # Check if current player has won - uses opposite player
                             print(f"Player {int(self.playerTurn)} wins!")
-                            self.board.draw_winner_message(self.screen, self.playerTurn)
+                            #self.board.draw_winner_message(self.screen, self.playerTurn)
                     self.board.draw_board(self.boardMatrix, self.screen)
         pygame.quit()
         sys.exit(0)
