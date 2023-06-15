@@ -20,7 +20,6 @@ class Game:
             text = font.render(f"Blue Player wins!", True, (255, 255, 255))
         else:
             text = font.render(f"Red Player wins!", True, (255, 255, 255))
-        #text = font.render(f"Player {winner} wins!", True, (255, 255, 255))
 
         # Calculate the dimensions and position of the box
         box_width = text.get_width() + 20
@@ -28,16 +27,26 @@ class Game:
         box_x = (GAME_RESOLUTION[0] - box_width) // 2
         box_y = (GAME_RESOLUTION[1] - box_height) // 2
 
-        # Draw the box
-        pygame.draw.rect(self.screen, (0, 0, 0), (box_x, box_y, box_width, box_height))
-        pygame.draw.rect(self.screen, (255, 255, 255), (box_x, box_y, box_width, box_height), 2)
+        # Create a transparent surface for the box
+        box_surface = pygame.Surface((box_width, box_height), pygame.SRCALPHA)
+        border_surface = pygame.Surface((box_width, box_height), pygame.SRCALPHA)
+        text_surface = pygame.Surface(text.get_size(), pygame.SRCALPHA)
 
-        # Calculate the position of the text
-        text_x = box_x + (box_width - text.get_width()) // 2
-        text_y = box_y + (box_height - text.get_height()) // 2
+        # Set the desired transparency (here, 128 for 50% transparency)
+        alpha_value = 128
 
-        # Blit the text onto the screen
-        self.screen.blit(text, (text_x, text_y))
+        # Fill the surfaces with the desired transparency
+        box_surface.fill((0, 0, 0, alpha_value))
+        border_surface.fill((255, 255, 255, alpha_value))
+        text_surface.fill((255, 255, 255, alpha_value))
+
+        # Draw the border onto the box surface
+        pygame.draw.rect(box_surface, (255, 255, 255, alpha_value), (0, 0, box_width, box_height), 2)
+
+        # Blit the box, border, and text onto the screen
+        self.screen.blit(box_surface, (box_x, box_y))
+        self.screen.blit(border_surface, (box_x, box_y))
+        self.screen.blit(text, (box_x + 10, box_y + 10))
 
         pygame.display.flip()
 
