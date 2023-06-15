@@ -32,7 +32,7 @@ class Game:
         border_surface = pygame.Surface((box_width, box_height), pygame.SRCALPHA)
         text_surface = pygame.Surface(text.get_size(), pygame.SRCALPHA)
 
-        # Set the desired transparency (here, 128 for 50% transparency)
+        # Set the desired transparency -> 128 = 50%
         alpha_value = 128
 
         # Fill the surfaces with the desired transparency
@@ -70,16 +70,28 @@ class Game:
                             self.winner_found = True
                             self.display_winner_box(self.winner)
 
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_r:
+                        self.restart_game()
+
             pygame.display.update()  # Update the display
 
         pygame.quit()
         sys.exit()
 
+    def restart_game(self):
+        self.boardMatrix = [[-1 for _ in range(SIZE)] for _ in range(SIZE)]
+        self.playerTurn = True
+        self.winner = None
+        self.winner_found = False
+        self.board.draw_board(self.boardMatrix, self.screen)
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn) # integer 0 or 1 depending on turn - update matrix
             self.playerTurn = not self.playerTurn #Switch between true and false
 
+    # All possible ways to place connecting tile
+    NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
     def check_win_condition(self, player):
         # Check if valid player and give player side
         if player == 0:  # Blue player
@@ -103,8 +115,8 @@ class Game:
 
         return False
 
-    # All possible ways to place connecting tile
-    NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
+
+
     def dfs(self, i, j, player, visited, connected):
         # Check out of bounds
         if i < 0 or i >= SIZE or j < 0 or j >= SIZE or self.boardMatrix[i][j] != player or visited[i][j]:
