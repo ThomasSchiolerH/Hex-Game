@@ -72,11 +72,11 @@ class AdvancedAIGame(Game):
         for i in range(self.size):
             if player == 0:
                 if self.boardMatrix[i][start_side] == player: # Check if the tile is occupied by player 1
-                    if self.dfs(i, start_side, player, visited, set()): # DFS from current tile
+                    if self.dfs(i, start_side, player, visited, []): # DFS from current tile
                         return True # Player has won
             elif player == 1:
                 if self.boardMatrix[start_side][i] == player:
-                    if self.dfs(start_side, i, player, visited, set()):
+                    if self.dfs(start_side, i, player, visited, []):
                         return True
 
         return False
@@ -90,7 +90,7 @@ class AdvancedAIGame(Game):
 
         # Mark current tile as visited
         visited[i][j] = True
-        connected.add((i, j))
+        connected.append((i, j))
 
         if player == 0 and j == self.size - 1: # Blue player and right most tile
             return True
@@ -102,6 +102,7 @@ class AdvancedAIGame(Game):
             if self.dfs(ni, nj, player, visited, connected): # dfs from each neighbor tile
                 return True # A win ahs been found
 
+        connected.pop()
         return False
 
     def minimax(self, depth, maximizingPlayer):

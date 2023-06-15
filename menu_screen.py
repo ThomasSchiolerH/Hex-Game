@@ -38,8 +38,7 @@ def show_menu():
         game.play()
 
     def start_computer_game(difficulty, gameSize):
-        mainmenu._open(computer_mode_menu)
-        gameScreen = get_game_screen(get_game_screen)
+        gameScreen = get_game_screen(gameSize)
         if difficulty == "easy":
             aiGame = SimpleAIGame(gameScreen, gameSize)
         elif difficulty == "hard":
