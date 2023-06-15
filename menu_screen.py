@@ -6,8 +6,10 @@ from drawboard import Board
 
 from game import Game
 from mp_game import MPGame
+
 from ai_game_simple import SimpleAIGame
 from ai_game_advanced import AdvancedAIGame
+
 from constants import *
 
 
@@ -56,15 +58,22 @@ def show_menu():
 
 
     def start_computer_game(difficulty):
-        gameSize = int(boardSizeField.get_value())
-        boardSize = getGameResolution(gameSize)
-        gameScreen = pygame.display.set_mode(boardSize)
-        gameScreen.fill(BACKGROUND_COLOUR)
-        if (difficulty == "easy"):
-            ai_game = AIGame(gameScreen, gameSize)
-        elif (difficulty == "hard"):
-            ai_game = AIGame(gameScreen, gameSize)
-        ai_game.play()
+        try:
+            gameSize = int(boardSizeField.get_value())
+            if gameSize <= 1 or gameSize > 20:
+                boardSizeLabel.set_title("Board size has to be between 2-20")
+            else:
+                gameSize = int(boardSizeField.get_value())
+                boardSize = getGameResolution(gameSize)
+                gameScreen = pygame.display.set_mode(boardSize)
+                gameScreen.fill(BACKGROUND_COLOUR)
+                if (difficulty == "easy"):
+                    aiGame = SimpleAIGame(gameScreen, gameSize)
+                elif (difficulty == "hard"):
+                    aiGame = AdvancedAIGame(gameScreen, gameSize)
+                aiGame.play()
+        except ValueError:
+            boardSizeLabel.set_title("Choose a board size")
 
     def getGameResolution(size):
         width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size

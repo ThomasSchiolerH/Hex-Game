@@ -84,7 +84,7 @@ class Game:
 
 
         pygame.quit()
-        sys.exit()
+        sys.exit(0)
 
     def getGameResolution(self, size):
         width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size
