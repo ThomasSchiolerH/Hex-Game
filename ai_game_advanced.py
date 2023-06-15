@@ -1,7 +1,7 @@
 import random
 import time
 from game import Game
-from constants import SIZE
+
 
 class AdvancedAIGame(Game):
     def __init__(self, screen):

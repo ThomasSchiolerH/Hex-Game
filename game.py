@@ -7,12 +7,12 @@ class Game:
     def __init__(self, screen, size):
         self.size = size
         self.board = Board(self.size)
+
         self.clock = pygame.time.Clock()
         self.playerTurn = True
         self.screen = screen
         self.connected = []
         self.boardMatrix = [[-1 for _ in range(size)] for _ in range(size)]
-        self.boardMatrix = [[-1 for _ in range(SIZE)] for _ in range(SIZE)]
         self.winner = None  # Winner attribute to store the winning player
         self.winner_found = False  # Flag to indicate if a winner is found
 
@@ -27,8 +27,9 @@ class Game:
         # Calculate the dimensions and position of the box
         box_width = text.get_width() + 20
         box_height = text.get_height() + 20
-        box_x = (GAME_RESOLUTION[0] - box_width) // 2
-        box_y = (GAME_RESOLUTION[1] - box_height) // 2
+        width, height = self.getGameResolution(self.size)
+        box_x = (width - box_width) // 2
+        box_y = (height - box_height) // 2
 
         # Create a transparent surface for the box
         box_surface = pygame.Surface((box_width, box_height), pygame.SRCALPHA)
@@ -69,6 +70,7 @@ class Game:
                         # Check if the current player has won
                         if self.check_win_condition(int(not self.playerTurn)):  # Check if current player has won - uses opposite player
                             print(f"Player {int(self.playerTurn)} wins!")
+                            self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
                             self.winner = int(self.playerTurn)
                             self.winner_found = True
                             self.display_winner_box(self.winner)
@@ -79,13 +81,19 @@ class Game:
 
             pygame.display.update()  # Update the display
 
-                            self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
+
 
         pygame.quit()
         sys.exit()
 
+    def getGameResolution(self, size):
+        width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size
+        height = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size
+
+        return (width, height)
+
     def restart_game(self):
-        self.boardMatrix = [[-1 for _ in range(SIZE)] for _ in range(SIZE)]
+        self.boardMatrix = [[-1 for _ in range(self.size)] for _ in range(self.size)]
         self.playerTurn = True
         self.winner = None
         self.winner_found = False
