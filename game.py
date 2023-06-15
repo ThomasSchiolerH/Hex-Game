@@ -49,18 +49,13 @@ class Game:
                     pos = self.board.get_nearest_pos(*pygame.mouse.get_pos())
                     if pos is not None:
                         self.turn(*pos)
+                        self.board.draw_board(self.boardMatrix, self.screen)
                         # Check if the current player has won
                         if self.check_win_condition(int(not self.playerTurn)):
                             print(f"Player {int(self.playerTurn)} wins!")
                             self.winner = int(self.playerTurn)
                             self.winner_found = True
-
-            # Check if a winner is found and display the box with text
-            if self.winner_found:
-                self.display_winner_box(self.winner)
-            else:
-                # Draw the game board if no winner is found
-                self.board.draw_board(self.boardMatrix, self.screen)
+                            self.display_winner_box(self.winner)
 
             pygame.display.update()  # Update the display
 
