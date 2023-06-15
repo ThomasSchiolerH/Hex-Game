@@ -25,8 +25,8 @@ class SimpleAIGame(Game):
             self.three_stategy(i,j)
         else:
             available_tiles = []
-            for i in range(self.self.size):
-                for j in range(self.self.size):
+            for i in range(self.size):
+                for j in range(self.size):
                     if self.boardMatrix[i][j] == -1:
                         available_tiles.append((i, j))
 
