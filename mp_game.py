@@ -63,7 +63,7 @@ class MPGame(Game):
         active = False
         #"25.53.14.230", 9000
         #25.63.154.249
-        text = ""
+        text = "25.67.64.7:9000"
         done = False
 
         while not done:

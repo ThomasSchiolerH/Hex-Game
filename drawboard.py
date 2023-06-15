@@ -91,7 +91,6 @@ class Board:
                 color = 0
 
     def findPolygonPoints(self, cornerArray):
-        print("before find poly ", self.size)
         points = []
         if cornerArray == "topRowCorners":
             for i in range(self.size):

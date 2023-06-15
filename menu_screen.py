@@ -10,8 +10,7 @@ from mp_game import MPGame
 from ai_game_simple import SimpleAIGame
 from ai_game_advanced import AdvancedAIGame
 
-from constants import MENU_RESOLUTION, WINDOW_NAME, BACKGROUND_COLOUR
-from constants import HEX_RADIUS, HEX_OFFSET, MWIDTH, MHEIGHT, WHITE
+from constants import *
 
 
 def show_menu():
@@ -70,7 +69,7 @@ def show_menu():
             elif mode == "host":
                 host_game(gameSize)
             elif mode == "join":
-                join_game()
+                join_game(gameSize)
 
     def getGameResolution(size):
         width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size
@@ -82,11 +81,13 @@ def show_menu():
         mainmenu._open(about)
 
     def host_game(size):
-        mpgame = MPGame(menuScreen, size)
+        gameSize = get_game_screen(size)
+        mpgame = MPGame(gameSize, size)
         mpgame.host_game()
 
-    def join_game():
-        mpgame = MPGame(menuScreen, None)
+    def join_game(size):
+        gameSize = get_game_screen(size)
+        mpgame = MPGame(gameSize, None)
         mpgame.join_game()
 
     # Menu screens
