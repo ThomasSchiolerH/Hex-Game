@@ -1,3 +1,4 @@
+import pygame
 import pygame_menu
 import pygame_menu.font as pmfont
 
@@ -30,6 +31,8 @@ SIZE = 3
 MWIDTH = 850.0
 MHEIGHT = 610.0
 MENU_RESOLUTION = (MWIDTH, MHEIGHT)
+
+#Restart button
 
 
 # Player

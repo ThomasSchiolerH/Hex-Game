@@ -1,3 +1,5 @@
+from pygame import mouse
+
 from constants import *
 from drawboard import Board
 import pygame
@@ -12,6 +14,8 @@ class Game:
         self.screen = screen
         self.connected = []
         self.boardMatrix = [[-1 for _ in range(size)] for _ in range(size)]
+        self.button_rect = pygame.Rect(10, 10, 100, 40)
+        self.button_text = pygame.font.SysFont('Corbel', 35).render('Restart', True, WHITE)
 
 
     def event_handler(self):
@@ -32,11 +36,26 @@ class Game:
                             print(f"Player {int(self.playerTurn)} wins!")
                             self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
                             self.board.display_winner_box(self.playerTurn, self.screen)
+                    # Check if restart button is clicked
+                    if self.button_rect.collidepoint(event.pos):
+                        self.restart_game()
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         self.restart_game()
 
-            pygame.display.update()  
+            if self.button_rect.collidepoint(pygame.mouse.get_pos()):
+                pygame.draw.rect(self.screen, (170, 170, 170), self.button_rect)
+            else:
+                pygame.draw.rect(self.screen, (100, 100, 100), self.button_rect)
+
+            # Center the text within the button
+            text_x = self.button_rect.centerx - self.button_text.get_width() // 2
+            text_y = self.button_rect.centery - self.button_text.get_height() // 2
+
+            self.screen.blit(self.button_text, (text_x, text_y))
+
+            pygame.display.update()
 
         pygame.quit()
         sys.exit(0)
