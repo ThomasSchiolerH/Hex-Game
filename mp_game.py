@@ -105,14 +105,14 @@ class MPGame(Game):
 
     def host_game(self):
         self.screen.fill(BACKGROUND_COLOUR)
-        message = "{}:9000".format(self.IPAddr)
+        message = "{}:9000".format(SERVER_IP)
         self.board.display_message("Waiting for player to join...", 20, 90, WHITE, self.screen)
         self.board.display_message("Your IP Address is:", 20, 120, WHITE, self.screen)
         self.board.display_message(message, 20, 150, WHITE, self.screen)
         pygame.display.update()
         
 
-        self.socket.bind((self.IPAddr, 9000))
+        self.socket.bind((SERVER_IP, 9000))
         
         self.await_for_joining_player()
         
@@ -127,7 +127,7 @@ class MPGame(Game):
         self.event_handler()
 
     def join_game(self):
-        self.socket.bind((self.IPAddr, 9001))
+        self.socket.bind((SERVER_IP, 9001))
         self.await_join_confirmation()
         
         self.board = Board(self.size)

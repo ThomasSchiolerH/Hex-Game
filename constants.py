@@ -22,7 +22,7 @@ HEX_OFFSET = 95
 
 
 # Multiplayer
-SERVER_IP = "25.61.16.232"
+SERVER_IP = "25.66.45.214"
 
 # Game window
 SIZE = 3
