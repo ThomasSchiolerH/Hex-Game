@@ -44,7 +44,7 @@ class AdvancedAIGame(Game):
                     for j in range(self.size):
                         if self.boardMatrix[i][j] == -1:
                             self.boardMatrix[i][j] = int(self.playerTurn)
-                            score = self.minimax(3, False)
+                            score = self.alpha_beta_pruned_minimax(3, False, float('-inf'), float('inf'))
                             self.boardMatrix[i][j] = -1
                             if score > best_score:
                                 best_score = score
@@ -67,22 +67,23 @@ class AdvancedAIGame(Game):
         else:
             return False
 
-        #Visited tiles stored in 2d list - use DFS so no tiles are visited twice
-        visited = [[False for _ in range(self.size)] for _ in range(self.size)] # Set all false to start
+        # Visited tiles stored in 2d list - use DFS so no tiles are visited twice
+        visited = [[False for _ in range(self.size)] for _ in range(self.size)]  # Set all false to start
         for i in range(self.size):
             if player == 0:
-                if self.boardMatrix[i][start_side] == player: # Check if the tile is occupied by player 1
-                    if self.dfs(i, start_side, player, visited, []): # DFS from current tile
-                        return True # Player has won
+                if self.boardMatrix[i][start_side] == player:  # Check if the tile is occupied by player 1
+                    if self.dfs(i, start_side, player, visited, set()):  # DFS from current tile
+                        return True  # Player has won
             elif player == 1:
                 if self.boardMatrix[start_side][i] == player:
-                    if self.dfs(start_side, i, player, visited, []):
+                    if self.dfs(start_side, i, player, visited, set()):
                         return True
 
         return False
 
-    # All possible ways to palce connecting tile
+    # All possible ways to place connecting tile
     NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
+
     def dfs(self, i, j, player, visited, connected):
         # Check out of bounds
         if i < 0 or i >= self.size or j < 0 or j >= self.size or self.boardMatrix[i][j] != player or visited[i][j]:
@@ -90,70 +91,75 @@ class AdvancedAIGame(Game):
 
         # Mark current tile as visited
         visited[i][j] = True
-        connected.append((i, j))
+        connected.add((i, j))
 
-        if player == 0 and j == self.size - 1: # Blue player and right most tile
+        if player == 0 and j == self.size - 1:  # Blue player and rightmost tile
             return True
-        elif player == 1 and i == self.size - 1: # Red player and bottom must tile
+        elif player == 1 and i == self.size - 1:  # Red player and bottommost tile
             return True
 
         for dx, dy in self.NEIGHBOR_OFFSETS:
             ni, nj = i + dx, j + dy
-            if self.dfs(ni, nj, player, visited, connected): # dfs from each neighbor tile
-                return True # A win ahs been found
+            if self.dfs(ni, nj, player, visited, connected):  # dfs from each neighbor tile
+                return True  # A win has been found
 
-        connected.pop()
         return False
 
-    def minimax(self, depth, maximizingPlayer):
+    def alpha_beta_pruned_minimax(self, depth, maximizingPlayer, alpha, beta):
         if depth == 0 or self.check_win_condition(0) or self.check_win_condition(1):
             return self.evaluate()
 
         if maximizingPlayer:
-            maxEval = float('-inf')
+            best_score = float('-inf')
             for i in range(self.size):
                 for j in range(self.size):
                     if self.boardMatrix[i][j] == -1:
                         self.boardMatrix[i][j] = 1
-                        eval = self.minimax(depth - 1, False)
+                        score = self.alpha_beta_pruned_minimax(depth - 1, False, alpha, beta)
                         self.boardMatrix[i][j] = -1
-                        maxEval = max(maxEval, eval)
-            return maxEval
+                        best_score = max(best_score, score)
+                        alpha = max(alpha, best_score)
+                        if beta <= alpha:
+                            break
+            return best_score
         else:
-            minEval = float('inf')
+            best_score = float('inf')
             for i in range(self.size):
                 for j in range(self.size):
                     if self.boardMatrix[i][j] == -1:
                         self.boardMatrix[i][j] = 0
-                        eval = self.minimax(depth - 1, True)
+                        score = self.alpha_beta_pruned_minimax(depth - 1, True, alpha, beta)
                         self.boardMatrix[i][j] = -1
-                        minEval = min(minEval, eval)
-            return minEval
+                        best_score = min(best_score, score)
+                        beta = min(beta, best_score)
+                        if beta <= alpha:
+                            break
+            return best_score
 
     def evaluate(self):
         score = 0
-        # Check rows
         for i in range(self.size):
-            if self.boardMatrix[i][0] == self.boardMatrix[i][1] == self.boardMatrix[i][2] == 1:
-                score += 10
-            elif self.boardMatrix[i][0] == self.boardMatrix[i][1] == self.boardMatrix[i][2] == 0:
-                score -= 10
+            # Check rows
+            if all(self.boardMatrix[i][j] == 1 for j in range(self.size)):
+                score += 100  # Increased weight for horizontal paths
+            elif all(self.boardMatrix[i][j] == 0 for j in range(self.size)):
+                score -= 100  # Increased weight for horizontal paths
 
-        # Check columns
-        for j in range(self.size):
-            if self.boardMatrix[0][j] == self.boardMatrix[1][j] == self.boardMatrix[2][j] == 1:
+            # Check columns
+            if all(self.boardMatrix[j][i] == 1 for j in range(self.size)):
                 score += 10
-            elif self.boardMatrix[0][j] == self.boardMatrix[1][j] == self.boardMatrix[2][j] == 0:
+            elif all(self.boardMatrix[j][i] == 0 for j in range(self.size)):
                 score -= 10
 
         # Check diagonals
-        if self.boardMatrix[0][0] == self.boardMatrix[1][1] == self.boardMatrix[2][2] == 1:
+        if all(self.boardMatrix[i][i] == 1 for i in range(self.size)):
             score += 10
-        elif self.boardMatrix[0][0] == self.boardMatrix[1][1] == self.boardMatrix[2][2] == 0:
+        elif all(self.boardMatrix[i][i] == 0 for i in range(self.size)):
             score -= 10
-        if self.boardMatrix[0][2] == self.boardMatrix[1][1] == self.boardMatrix[2][0] == 1:
+
+        if all(self.boardMatrix[i][self.size - i - 1] == 1 for i in range(self.size)):
             score += 10
-        elif self.boardMatrix[0][2] == self.boardMatrix[1][1] == self.boardMatrix[2][0] == 0:
+        elif all(self.boardMatrix[i][self.size - i - 1] == 0 for i in range(self.size)):
             score -= 10
 
         return score
