@@ -45,9 +45,9 @@ class Game:
                         self.restart_game()
 
             if self.button_rect.collidepoint(pygame.mouse.get_pos()):
-                pygame.draw.rect(self.screen, (170, 170, 170), self.button_rect)
+                pygame.draw.rect(self.screen, LIGHT_GREY, self.button_rect)
             else:
-                pygame.draw.rect(self.screen, (100, 100, 100), self.button_rect)
+                pygame.draw.rect(self.screen, DARK_GREY, self.button_rect)
 
             # Center the text within the button
             text_x = self.button_rect.centerx - self.button_text.get_width() // 2
