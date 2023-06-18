@@ -24,7 +24,8 @@ TEXT_OFFSET = 45
 HEX_OFFSET = 95
 
 # Restart button dimensions and position
-restartPos = pygame.Rect(10, 10, 100, 40)
+gameButton1 = pygame.Rect(10, 10, 100, 40)
+gameButton2 = pygame.Rect(10, 60, 100, 40)
 
 # Multiplayer
 SERVER_IP = "25.61.16.232"
