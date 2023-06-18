@@ -7,6 +7,13 @@ from drawboard import Board
 import pygame
 import sys
 
+"""
+    File By
+    Author : @Marcus / SovereignPihl
+
+"""
+
+
 
 class MPGame(Game):
     def __init__(self, screen, size):
@@ -63,7 +70,7 @@ class MPGame(Game):
         active = False
         #"25.53.14.230", 9000
         #25.63.154.249
-        text = "25.67.64.7:9000"
+        text = ""
         done = False
 
         while not done:

@@ -7,6 +7,19 @@ import sys
 
 from main import main
 
+"""
+    File By
+    Author : @Marcus / SovereignPihl
+
+"""
+
+
+
+
+
+
+
+
 
 class Game:
     def __init__(self, screen, size):
@@ -24,6 +37,8 @@ class Game:
         self.menuText = pygame.font.SysFont('Corbel', 35).render('Menu', True, WHITE)
         self.gameOver = False
 
+    
+    #    @Authors: Marcus
     def event_handler(self):
         running = True
         while running:
@@ -93,6 +108,7 @@ class Game:
         self.board.draw_board(self.boardMatrix, self.screen)  # Redraw the game board
         self.gameOver = False
 
+    #    @Authors: Marcus
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn)
@@ -148,6 +164,7 @@ class Game:
 
         return False
 
+    #    @Authors: Marcus
     def play(self):
         print("Playing")
         self.board.draw_board(self.boardMatrix, self.screen)
