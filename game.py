@@ -18,11 +18,8 @@ class Game:
         self.screen = screen
         self.connected = []
         self.boardMatrix = [[-1 for _ in range(size)] for _ in range(size)]
-        self.restartButton = restartPos
-        self.menuButton = pygame.Rect(200, 10, 100, 40)
-        self.restartText = pygame.font.SysFont('Corbel', 35).render('Restart', True, WHITE)
-        self.menuText = pygame.font.SysFont('Corbel', 35).render('Menu', True, WHITE)
-        self.gameOver = False
+        self.restartButton = pygame.Rect(10, 10, 100, 40)
+        self.menuButton = pygame.Rect(120, 10, 100, 40)
 
     def event_handler(self):
         running = True
@@ -61,22 +58,12 @@ class Game:
             else:
                 pygame.draw.rect(self.screen, DARK_GREY, self.restartButton)
 
-            # Center the text within the button
-            text_x = self.restartButton.centerx - self.restartText.get_width() // 2
-            text_y = self.restartButton.centery - self.restartText.get_height() // 2
-
             if self.menuButton.collidepoint(pygame.mouse.get_pos()):
                 pygame.draw.rect(self.screen, LIGHT_GREY, self.menuButton)
             else:
                 pygame.draw.rect(self.screen, DARK_GREY, self.menuButton)
 
-            # Center the text within the button
-            text_x2 = self.menuButton.centerx - self.menuText.get_width() // 2
-            text_y2 = self.menuButton.centery - self.menuText.get_height() // 2
-
-            self.screen.blit(self.restartText, (text_x, text_y))
-            self.screen.blit(self.menuText, (text_x2, text_y2))
-
+            self.drawbuttons()
             pygame.display.update()
 
         pygame.quit()
@@ -148,6 +135,16 @@ class Game:
 
         return False
 
+    def drawbuttons(self):
+        text = pygame.font.SysFont('Corbel', 35).render("Restart", True, WHITE)
+        self.screen.blit(text,
+                         (self.restartButton.centerx - text.get_width() // 2,
+                          self.restartButton.centery - text.get_height() // 2))
+        text = pygame.font.SysFont('Corbel', 35).render("Menu", True, WHITE)
+        self.screen.blit(text,
+                         (self.menuButton.centerx - text.get_width() // 2,
+                          self.menuButton.centery - text.get_height() // 2))
+
     def play(self):
         print("Playing")
         self.board.draw_board(self.boardMatrix, self.screen)
@@ -158,3 +155,6 @@ class Game:
 
     def backToMenu(self):
         main()
+
+
+
