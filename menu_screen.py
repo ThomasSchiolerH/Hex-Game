@@ -1,15 +1,8 @@
-import os
-
-import pygame, pygame_menu
 from pygame_menu import themes
-from drawboard import Board
-
 from game import Game
 from mp_game import MPGame
-
 from ai_game_simple import SimpleAIGame
 from ai_game_advanced import AdvancedAIGame
-
 from constants import *
 
 

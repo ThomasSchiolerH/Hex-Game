@@ -8,7 +8,7 @@ from constants import WINCOLORS
 class SimpleAIGame(Game):
     def __init__(self, screen, size):
         super().__init__(screen, size)
-        self.self = self.size
+
 
         if self.size == 3:
             self.boardMatrix[1][1] = int(self.playerTurn)
@@ -25,7 +25,9 @@ class SimpleAIGame(Game):
                 return
 
         if self.size == 3:
-            self.three_stategy(i,j)
+            self.gametype = "AiGame"
+            self.three_stategy(i, j)
+
         else:
             if self.check_win_condition(int(not self.playerTurn)):  # Check if the opponent has won
                     print(f"Player {int(self.playerTurn)} wins!")
