@@ -47,17 +47,14 @@ class Game:
                 # Check if restart button is clicked
                 if event.type == pygame.MOUSEBUTTONDOWN and self.restartButton.collidepoint(event.pos):
                     self.restart_game()
-                    self.gameOver = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN and self.menuButton.collidepoint(event.pos):
                     self.backToMenu()
-                    self.gameOver = False
 
                 # Press R to restart
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         self.restart_game()
-                        self.gameOver = False
 
             if self.restartButton.collidepoint(pygame.mouse.get_pos()):
                 pygame.draw.rect(self.screen, LIGHT_GREY, self.restartButton)
@@ -94,6 +91,7 @@ class Game:
             self.playerTurn = True
 
         self.board.draw_board(self.boardMatrix, self.screen)  # Redraw the game board
+        self.gameOver = False
 
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
