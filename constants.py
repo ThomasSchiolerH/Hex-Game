@@ -1,3 +1,4 @@
+import pygame
 import pygame_menu
 import pygame_menu.font as pmfont
 
@@ -12,7 +13,9 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
-WINCOLORS = [(0, 106, 209), (191, 0, 0)]
+LIGHT_GREY = (170, 170, 170)
+DARK_GREY = (100, 100, 100)
+WINCOLORS = [(145, 236, 250),(252, 111, 111)]
 BACKGROUND_COLOUR = (40, 41, 35)
 
 # Board
@@ -20,9 +23,11 @@ HEX_RADIUS = 20
 TEXT_OFFSET = 45
 HEX_OFFSET = 95
 
+# Restart button dimensions and position
+restartPos = pygame.Rect(10, 10, 100, 40)
 
 # Multiplayer
-SERVER_IP = "25.61.16.232"
+SERVER_IP = "25.66.45.214"
 
 # Game window
 SIZE = 3
@@ -30,6 +35,8 @@ SIZE = 3
 MWIDTH = 850.0
 MHEIGHT = 610.0
 MENU_RESOLUTION = (MWIDTH, MHEIGHT)
+
+#Restart button
 
 
 # Player

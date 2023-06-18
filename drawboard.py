@@ -135,7 +135,7 @@ class Board:
 
 
     def display_message(self, message, x_disp, y_disp, color, screen):
-        font = pygame.font.Font('freesansbold.ttf', 32)
+        font = pygame.font.Font('freesansbold.ttf', 28)
         text_surf = font.render(message, True, color)
         text_rect = text_surf.get_rect()
         text_rect = x_disp, y_disp

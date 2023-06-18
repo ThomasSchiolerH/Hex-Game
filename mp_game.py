@@ -11,7 +11,7 @@ import sys
 class MPGame(Game):
     def __init__(self, screen, size):
         self.size = size
-        self.board = None
+        self.board = Board(0)
         self.clock = pygame.time.Clock()
         self.playerTurn = False
         self.screen = screen
@@ -20,6 +20,8 @@ class MPGame(Game):
         self.conn = None
         self.socket.settimeout(0.001)
         self.host = False
+        self.hostname = socket.gethostname()
+        self.IPAddr = socket.gethostbyname(self.hostname)
 
     def event_handler(self):
         running = True
@@ -34,8 +36,6 @@ class MPGame(Game):
             if not self.playerTurn:
                 self.recieve_turn()
             
-
-
         pygame.quit()
         sys.exit()
 
@@ -105,11 +105,13 @@ class MPGame(Game):
 
     def host_game(self):
         self.screen.fill(BACKGROUND_COLOUR)
+        message = "{}:9000".format(SERVER_IP)
+        self.board.display_message("Waiting for player to join...", 20, 90, WHITE, self.screen)
+        self.board.display_message("Your IP Address is:", 20, 120, WHITE, self.screen)
+        self.board.display_message(message, 20, 150, WHITE, self.screen)
         pygame.display.update()
         
-        #hostname = socket.gethostname()
-        #IPAddr = socket.gethostbyname(hostname)
-        #print(IPAddr)
+
         self.socket.bind((SERVER_IP, 9000))
         
         self.await_for_joining_player()
@@ -119,7 +121,6 @@ class MPGame(Game):
         self.board = Board(self.size)
         self.boardMatrix = [[-1 for i in range(self.size)] for j in range(self.size)]
         self.host = True
-        self.board.display_message("Waiting for player to join...", 20, 90, WHITE, self.screen)
 
         self.board.draw_board(self.boardMatrix, self.screen)
         self.clock.tick(30)
@@ -133,7 +134,6 @@ class MPGame(Game):
         self.boardMatrix = [[-1 for i in range(self.size)] for j in range(self.size)]
         
         self.board.draw_board(self.boardMatrix, self.screen)
-
         self.clock.tick(30)
         self.event_handler()
 
@@ -141,7 +141,6 @@ class MPGame(Game):
         try:
             m, _ = self.socket.recvfrom(5)
             m = m.decode("utf-8", "strict")
-            print(m)
             i, j = m.split(",")
             self.turn(int(i), int(j))
         except TimeoutError:
