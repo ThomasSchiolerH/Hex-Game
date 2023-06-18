@@ -12,14 +12,15 @@ class Game:
     def __init__(self, screen, size):
         self.size = size
         self.gametype = None
+        self.gameOver = False
         self.board = Board(self.size)
         self.clock = pygame.time.Clock()
         self.playerTurn = True
         self.screen = screen
         self.connected = []
         self.boardMatrix = [[-1 for _ in range(size)] for _ in range(size)]
-        self.restartButton = pygame.Rect(10, 10, 100, 40)
-        self.menuButton = pygame.Rect(120, 10, 100, 40)
+        self.restartButton = pygame.Rect(20, 10, 70, 30)
+        self.menuButton = pygame.Rect(110, 10, 70, 30)
 
     def event_handler(self):
         running = True
@@ -136,11 +137,11 @@ class Game:
         return False
 
     def drawbuttons(self):
-        text = pygame.font.SysFont('Corbel', 35).render("Restart", True, WHITE)
+        text = pygame.font.SysFont('Corbel', 20).render("Restart", True, WHITE)
         self.screen.blit(text,
                          (self.restartButton.centerx - text.get_width() // 2,
                           self.restartButton.centery - text.get_height() // 2))
-        text = pygame.font.SysFont('Corbel', 35).render("Menu", True, WHITE)
+        text = pygame.font.SysFont('Corbel', 20).render("Menu", True, WHITE)
         self.screen.blit(text,
                          (self.menuButton.centerx - text.get_width() // 2,
                           self.menuButton.centery - text.get_height() // 2))
