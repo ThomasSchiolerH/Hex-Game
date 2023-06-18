@@ -5,7 +5,7 @@ from game import Game
 class SimpleAIGame(Game):
     def __init__(self, screen, size):
         super().__init__(screen, size)
-        self.self = self.size
+
 
         if self.size == 3:
             self.boardMatrix[1][1] = int(self.playerTurn)
@@ -22,7 +22,9 @@ class SimpleAIGame(Game):
                 return
 
         if self.size == 3:
-            self.three_stategy(i,j)
+            self.gametype = "AiGame"
+            self.three_stategy(i, j)
+
         else:
             available_tiles = []
             for i in range(self.size):

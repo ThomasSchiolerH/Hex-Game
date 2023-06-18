@@ -8,6 +8,7 @@ import sys
 class Game:
     def __init__(self, screen, size):
         self.size = size
+        self.gametype = None
         self.board = Board(self.size)
         self.clock = pygame.time.Clock()
         self.playerTurn = True
@@ -32,7 +33,7 @@ class Game:
                         self.turn(*pos)
                         self.board.draw_board(self.boardMatrix, self.screen)
                         # Check if the current player has won
-                        if self.check_win_condition(int(not self.playerTurn)):  
+                        if self.check_win_condition(int(not self.playerTurn)):
                             print(f"Player {int(self.playerTurn)} wins!")
                             self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
                             self.board.display_winner_box(self.playerTurn, self.screen)
@@ -63,8 +64,15 @@ class Game:
 
     def restart_game(self):
         self.boardMatrix = [[-1 for _ in range(self.size)] for _ in range(self.size)]
-        self.playerTurn = True
+        if (self.gametype == "AiGame"):
+            self.playerTurn = False
+            self.boardMatrix[1][1] = 1
+        else:
+            self.playerTurn = True
+
         self.board.draw_board(self.boardMatrix, self.screen)  # Redraw the game board
+
+
 
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
