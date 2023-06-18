@@ -15,7 +15,7 @@ class Game:
         self.screen = screen
         self.connected = []
         self.boardMatrix = [[-1 for _ in range(size)] for _ in range(size)]
-        self.button_rect = pygame.Rect(10, 10, 100, 40)
+        self.button_rect = restartPos
         self.button_text = pygame.font.SysFont('Corbel', 35).render('Restart', True, WHITE)
 
 
@@ -40,7 +40,7 @@ class Game:
                     # Check if restart button is clicked
                     if self.button_rect.collidepoint(event.pos):
                         self.restart_game()
-
+                #Press R to restart
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         self.restart_game()
@@ -76,14 +76,15 @@ class Game:
 
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
-            self.boardMatrix[i][j] = int(self.playerTurn) 
-            self.playerTurn = not self.playerTurn 
+            self.boardMatrix[i][j] = int(self.playerTurn)
+            self.playerTurn = not self.playerTurn
 
 
     def check_win_condition(self, player):
-        if player == 0:  
+        # Set boundaries for dfs
+        if player == 0:
             start_side, end_side = 0, self.size - 1
-        elif player == 1: 
+        elif player == 1:
             start_side, end_side = 0, self.size - 1
         else:
             return False
@@ -102,7 +103,7 @@ class Game:
 
         return False
 
-    # All possible ways to palce connecting tile
+    # All possible ways to place connecting tile
     NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
     def dfs(self, i, j, player, visited, path):
 
@@ -124,7 +125,7 @@ class Game:
             ni, nj = i + dx, j + dy
             if self.dfs(ni, nj, player, visited, path): # dfs from each neighbor tile
                 self.connected = path
-                return True # A win ahs been found
+                return True # A win has been found
 
         path.pop()
 
