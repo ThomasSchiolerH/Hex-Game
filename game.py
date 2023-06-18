@@ -10,13 +10,10 @@ from main import main
 """
     File By
     Author : @Marcus / SovereignPihl
+    Author : @Jakob / jakob-kild
+    Author : @Thomas / ThomasSchiolerH
 
 """
-
-
-
-
-
 
 
 
@@ -36,7 +33,7 @@ class Game:
         self.menuButton = pygame.Rect(110, 10, 70, 30)
 
 
-    #    @Authors: Marcus
+    #    @Authors: Marcus, Thomas
     def event_handler(self):
         running = True
         while running:
@@ -85,6 +82,7 @@ class Game:
         pygame.quit()
         sys.exit(0)
 
+    #    @Authors: Thomas
     def restart_game(self):
         self.boardMatrix = [[-1 for _ in range(self.size)] for _ in range(self.size)]
         if self.gametype == "AiGame":
@@ -102,6 +100,7 @@ class Game:
             self.boardMatrix[i][j] = int(self.playerTurn)
             self.playerTurn = not self.playerTurn
 
+    #    @Authors: Thomas
     def check_win_condition(self, player):
         # Set boundaries for dfs
         if player == 0:
@@ -128,6 +127,7 @@ class Game:
     # All possible ways to place connecting tile
     NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
 
+    #    @Authors: Thomas, Jakob
     def dfs(self, i, j, player, visited, path):
         # Check out of bounds
         if i < 0 or i >= self.size or j < 0 or j >= self.size or self.boardMatrix[i][j] != player or visited[i][j]:
@@ -152,6 +152,7 @@ class Game:
 
         return False
 
+    #    @Authors: Jakob
     def drawbuttons(self):
         text = pygame.font.SysFont('Corbel', 20).render("Restart", True, WHITE)
         self.screen.blit(text,
@@ -171,5 +172,6 @@ class Game:
         self.clock.tick(30)
         self.event_handler()
 
+    #    @Authors: Jakob
     def backToMenu(self):
         main()

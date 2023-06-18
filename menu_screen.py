@@ -10,6 +10,8 @@ from constants import *
 """
     File By
     Author : @Marcus / SovereignPihl
+    Author : @Jakob / jakob-kild
+    Author : @Thomas / ThomasSchiolerH
 
 """
 
@@ -30,23 +32,16 @@ def show_menu():
     surface = pygame.display.set_mode(MENU_RESOLUTION)
 
     # Menus
-    def player_vs_computer_game():
-        # Add your logic here for player vs computer mode
-        mainmenu._open(computer_mode_menu)
+    #    @Authors: Thomas
+    def player_vs_computer_game(gameSize):
+        gameScreen = get_game_screen(gameSize)
+        SimpleAIGame(gameScreen, gameSize).play()
 
+    #    @Authors: Thomas
     def player_vs_player_game(gameSize):
         gameScreen = get_game_screen(gameSize)
         game = Game(gameScreen, gameSize)
         game.play()
-
-    def start_computer_game(difficulty, gameSize):
-        gameScreen = get_game_screen(gameSize)
-        if difficulty == "easy":
-            aiGame = SimpleAIGame(gameScreen, gameSize)
-        elif difficulty == "hard":
-            aiGame = AdvancedAIGame(gameScreen, gameSize)
-        aiGame.play()
-
     
     #    @Authors: Marcus
     def get_game_screen(gameSize):
@@ -70,18 +65,15 @@ def show_menu():
             if mode == "pvp":
                 player_vs_player_game(gameSize)
             elif mode == "pve":
-                player_vs_computer_game()
+                player_vs_computer_game(gameSize)
             elif mode == "host":
                 host_game(gameSize)
             elif mode == "join":
                 join_game(gameSize)
 
-    def getGameResolution(size):
-        width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size
-        height = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size
 
-        return (width, height)
 
+    #    @Authors: Thomas
     def about_menu():
         mainmenu._open(about)
 
@@ -100,11 +92,9 @@ def show_menu():
         mpgame.join_game()
 
     # Menu screens
+    #    @Authors: Jakob, Thomas
     game_mode_menu = pygame_menu.Menu(
         "Select Game Mode", MWIDTH, MHEIGHT, theme=themes.THEME_DARK
-    )
-    computer_mode_menu = pygame_menu.Menu(
-        "Select Difficulty", MWIDTH, MHEIGHT, theme=themes.THEME_DARK
     )
 
     # Main menu screen
@@ -133,14 +123,6 @@ def show_menu():
     host_button = game_mode_menu.add.button("Host", lambda: init_screen("host"))
     join_button = game_mode_menu.add.button("Join", lambda: init_screen("join"))
 
-    # Computer Ai buttons
-    easy_button = computer_mode_menu.add.button(
-        "Easy", lambda: start_computer_game("easy", int(boardSizeField.get_value()))
-    )
-    hard_button = computer_mode_menu.add.button(
-        "Hard", lambda: start_computer_game("hard", int(boardSizeField.get_value()))
-    )
-
     arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
     about = pygame_menu.Menu("About Hex", MWIDTH, MHEIGHT, theme=about_theme)
@@ -162,3 +144,10 @@ def show_menu():
                 arrow.draw(surface, mainmenu.get_current().get_selected_widget())
 
         pygame.display.update()
+
+#    @Authors: Jakob
+def getGameResolution(size):
+    width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size
+    height = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size
+
+    return (width, height)

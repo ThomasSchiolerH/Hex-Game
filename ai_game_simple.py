@@ -4,6 +4,11 @@ import pygame
 import sys
 from constants import WINCOLORS
 
+"""
+    File By
+    Author : @Adam/ adamajane
+
+"""
 
 class SimpleAIGame(Game):
     def __init__(self, screen, size):
@@ -14,6 +19,7 @@ class SimpleAIGame(Game):
             self.boardMatrix[1][1] = int(self.playerTurn)
             self.playerTurn = not self.playerTurn
 
+    #    @Authors: Adam
     def turn(self, i, j):
         while True:
             if self.boardMatrix[i][j] == -1:
@@ -50,6 +56,7 @@ class SimpleAIGame(Game):
                         self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
                         self.board.display_winner_box(self.playerTurn, self.screen)
 
+    #    @Authors: Adam
     def three_stategy(self, i, j):
         # Check if the player move is a corner move
         if (i, j) in [(0, 0), (0, self.size-1), (self.size-1, 0), (self.size-1, self.size-1)]:

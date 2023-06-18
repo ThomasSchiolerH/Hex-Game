@@ -2,6 +2,11 @@ import random
 import time
 from game import Game
 
+"""
+    File By
+    Author : @Adam / adamajane
+
+"""
 
 class AdvancedAIGame(Game):
     def __init__(self, screen, size):
@@ -22,6 +27,7 @@ class AdvancedAIGame(Game):
                 self.boardMatrix[i][j] = int(self.playerTurn)
                 self.playerTurn = not self.playerTurn
 
+    #    @Authors: Adam
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn)
@@ -58,6 +64,7 @@ class AdvancedAIGame(Game):
             if self.check_win_condition(int(not self.playerTurn)):
                 print(f"Player {int(self.playerTurn)} wins!")
 
+    #    @Authors: Adam
     def check_win_condition(self, player):
         # Check if valid player and give player side
         if player == 0:  # Blue player
@@ -84,6 +91,7 @@ class AdvancedAIGame(Game):
     # All possible ways to place connecting tile
     NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
 
+    #    @Authors: Adam
     def dfs(self, i, j, player, visited, connected):
         # Check out of bounds
         if i < 0 or i >= self.size or j < 0 or j >= self.size or self.boardMatrix[i][j] != player or visited[i][j]:
@@ -105,6 +113,7 @@ class AdvancedAIGame(Game):
 
         return False
 
+    #    @Authors: Adam
     def alpha_beta_pruned_minimax(self, depth, maximizingPlayer, alpha, beta):
         if depth == 0 or self.check_win_condition(0) or self.check_win_condition(1):
             return self.evaluate()
@@ -136,6 +145,7 @@ class AdvancedAIGame(Game):
                             break
             return best_score
 
+    #    @Authors: Adam
     def evaluate(self):
         score = 0
         for i in range(self.size):

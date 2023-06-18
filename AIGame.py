@@ -2,6 +2,12 @@ import random
 import time
 from game import Game
 
+"""
+    File By
+    Author : @Adam / adamajane
+
+"""
+
 class AIGame(Game):
     def __init__(self, screen, size):
         super().__init__(screen, size)
@@ -18,6 +24,7 @@ class AIGame(Game):
             self.boardMatrix[i][j] = int(self.playerTurn)
             self.playerTurn = not self.playerTurn
 
+    #    @Authors: Adam
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn)

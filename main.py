@@ -1,10 +1,15 @@
 import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-os.environ['SDL_VIDEO_CENTERED'] = '1'
-
 import pygame
 import menu_screen
 
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+os.environ['SDL_VIDEO_CENTERED'] = '1'
+
+"""
+    File By
+    Author : All
+
+"""
 
 def main():
     pygame.init()

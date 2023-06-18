@@ -7,6 +7,8 @@ from constants import *
 """
     File By
     Author : @Marcus / SovereignPihl
+    Author : @Jakob / Jakob-kild
+    Author : @Thomas / ThomasSchiolerH
 
 """
 
@@ -43,6 +45,7 @@ class Board:
             return None
         return i, j
 
+    #    @Authors: Jakob
     def draw_border(self, screen):
         topRowCorners = []
         leftRowCorners = []
@@ -91,6 +94,7 @@ class Board:
         borders = [topRowCorners, rightRowCorners, bottomRowCorners, leftRowCorners]
         self.drawPolygonBorders(screen, borders)
 
+    #    @Authors: Jakob
     def drawPolygonBorders(self, screen, borderList):
         color = 0
         for border in borderList:
@@ -101,6 +105,7 @@ class Board:
             else:
                 color = 0
 
+    #    @Authors: Jakob
     def findPolygonPoints(self, cornerArray):
         points = []
         if cornerArray == "topRowCorners":
@@ -120,7 +125,8 @@ class Board:
                 x, y = self.get_pixel_coords(0, i)
                 points.extend(self.hexagonPoints(x, y, [2, 1, 0]))
         return points
-    
+
+    #    @Authors: Jakob
     def hexagonPoints(self, x, y, edges):
         points = []
         for i in edges:
@@ -128,6 +134,7 @@ class Board:
                            y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * i / 6)))
         return points
 
+    #    @Authors: Jakob
     def colorWinPath(self, path, screen, playerColor):
         for point in path:
             x, y = self.get_pixel_coords(point[0], point[1])
@@ -155,13 +162,15 @@ class Board:
         text_rect = x_disp, y_disp
         screen.blit(text_surf, text_rect)
         pygame.display.update()
-        
+
+    #    @Authors: Jakob
     def getGameResolution(self, size):
         width = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size + HEX_RADIUS * size
         height = 2 * HEX_OFFSET + (1.75 * HEX_RADIUS) * size
 
         return (width, height)
 
+    #    @Authors: Thomas
     def display_winner_box(self, winner, screen):
         # Create a font and render the winner text
         font = pygame.font.Font(None, 48)

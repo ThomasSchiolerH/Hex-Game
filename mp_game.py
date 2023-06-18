@@ -13,8 +13,6 @@ import sys
 
 """
 
-
-
 class MPGame(Game):
     def __init__(self, screen, size):
         self.size = size
@@ -30,6 +28,7 @@ class MPGame(Game):
         self.hostname = socket.gethostname()
         self.IPAddr = socket.gethostbyname(self.hostname)
 
+    #    @Authors: Marcus
     def event_handler(self):
         running = True
         while running:
@@ -46,6 +45,7 @@ class MPGame(Game):
         pygame.quit()
         sys.exit()
 
+    #    @Authors: Marcus
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = abs(int(self.host - self.playerTurn))
@@ -60,7 +60,7 @@ class MPGame(Game):
                 self.board.colorWinPath(self.connected, self.screen, WINCOLORS[not self.playerTurn])
                 self.board.display_winner_box(not self.playerTurn, self.screen)
 
-
+    #    @Authors: Marcus
     def get_host(self):
         font = pygame.font.Font(None, 32)
         input_box = pygame.Rect(100, 100, 140, 32)
@@ -110,6 +110,7 @@ class MPGame(Game):
             pygame.display.flip()
             self.clock.tick(30)
 
+    #    @Authors: Marcus
     def host_game(self):
         self.screen.fill(BACKGROUND_COLOUR)
         message = "{}:9000".format(SERVER_IP)
@@ -133,6 +134,7 @@ class MPGame(Game):
         self.clock.tick(30)
         self.event_handler()
 
+    #    @Authors: Marcus
     def join_game(self):
         self.socket.bind((SERVER_IP, 9001))
         self.await_join_confirmation()
@@ -144,6 +146,7 @@ class MPGame(Game):
         self.clock.tick(30)
         self.event_handler()
 
+    #    @Authors: Marcus
     def recieve_turn(self):
         try:
             m, _ = self.socket.recvfrom(5)
@@ -153,6 +156,7 @@ class MPGame(Game):
         except TimeoutError:
             pass
 
+    #    @Authors: Marcus
     def local_turn(self):
         pos = self.board.get_nearest_pos(*pygame.mouse.get_pos())
         if pos is not None:
@@ -160,6 +164,7 @@ class MPGame(Game):
             self.turn(*pos)
             self.socket.sendto(bytes("{},{}".format(*pos), "utf-8"), self.conn)
 
+    #    @Authors: Marcus
     def await_for_joining_player(self):
         while self.conn is None:
             pygame.event.get()
@@ -168,7 +173,8 @@ class MPGame(Game):
                 self.playerTurn = True
             except TimeoutError:
                 pass
-    
+
+    #    @Authors: Marcus
     def await_join_confirmation(self):
         while self.conn is None:
             pygame.event.get()
