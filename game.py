@@ -22,7 +22,7 @@ class Game:
         self.menuButton = pygame.Rect(200, 10, 100, 40)
         self.restartText = pygame.font.SysFont('Corbel', 35).render('Restart', True, WHITE)
         self.menuText = pygame.font.SysFont('Corbel', 35).render('Menu', True, WHITE)
-
+        self.gameOver = False
 
     def event_handler(self):
         running = True
@@ -32,7 +32,7 @@ class Game:
                     running = False
                     print("Quit")
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN and not self.gameOver:
                     pos = self.board.get_nearest_pos(*pygame.mouse.get_pos())
                     if pos is not None:
                         self.turn(*pos)
@@ -42,15 +42,22 @@ class Game:
                             print(f"Player {int(self.playerTurn)} wins!")
                             self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
                             self.board.display_winner_box(self.playerTurn, self.screen)
-                    # Check if restart button is clicked
-                    if self.restartButton.collidepoint(event.pos):
-                        self.restart_game()
-                    if self.menuButton.collidepoint(event.pos):
-                        self.backToMenu()
-                #Press R to restart
+                            self.gameOver = True
+
+                # Check if restart button is clicked
+                if event.type == pygame.MOUSEBUTTONDOWN and self.restartButton.collidepoint(event.pos):
+                    self.restart_game()
+                    self.gameOver = False
+
+                if event.type == pygame.MOUSEBUTTONDOWN and self.menuButton.collidepoint(event.pos):
+                    self.backToMenu()
+                    self.gameOver = False
+
+                # Press R to restart
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         self.restart_game()
+                        self.gameOver = False
 
             if self.restartButton.collidepoint(pygame.mouse.get_pos()):
                 pygame.draw.rect(self.screen, LIGHT_GREY, self.restartButton)
@@ -78,10 +85,9 @@ class Game:
         pygame.quit()
         sys.exit(0)
 
-
     def restart_game(self):
         self.boardMatrix = [[-1 for _ in range(self.size)] for _ in range(self.size)]
-        if (self.gametype == "AiGame"):
+        if self.gametype == "AiGame":
             self.playerTurn = False
             self.boardMatrix[1][1] = 1
         else:
@@ -89,13 +95,10 @@ class Game:
 
         self.board.draw_board(self.boardMatrix, self.screen)  # Redraw the game board
 
-
-
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn)
             self.playerTurn = not self.playerTurn
-
 
     def check_win_condition(self, player):
         # Set boundaries for dfs
@@ -106,13 +109,13 @@ class Game:
         else:
             return False
 
-        #Visited tiles stored in 2d list - use DFS so no tiles are visited twice
-        visited = [[False for _ in range(self.size)] for _ in range(self.size)] # Set all false to start
+        # Visited tiles stored in 2d list - use DFS so no tiles are visited twice
+        visited = [[False for _ in range(self.size)] for _ in range(self.size)]  # Set all false to start
         for i in range(self.size):
             if player == 0:
-                if self.boardMatrix[i][start_side] == player: # Check if the tile is occupied by player 1
-                    if self.dfs(i, start_side, player, visited, []): # DFS from current tile
-                        return True # Player has won
+                if self.boardMatrix[i][start_side] == player:  # Check if the tile is occupied by player 1
+                    if self.dfs(i, start_side, player, visited, []):  # DFS from current tile
+                        return True  # Player has won
             elif player == 1:
                 if self.boardMatrix[start_side][i] == player:
                     if self.dfs(start_side, i, player, visited, []):
@@ -122,8 +125,8 @@ class Game:
 
     # All possible ways to place connecting tile
     NEIGHBOR_OFFSETS = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, 1), (1, -1)]
-    def dfs(self, i, j, player, visited, path):
 
+    def dfs(self, i, j, player, visited, path):
         # Check out of bounds
         if i < 0 or i >= self.size or j < 0 or j >= self.size or self.boardMatrix[i][j] != player or visited[i][j]:
             return False
@@ -132,17 +135,16 @@ class Game:
         visited[i][j] = True
         path.append((i, j))
 
-
-        if player == 0 and j == self.size - 1: # Blue player and right most tile
+        if player == 0 and j == self.size - 1:  # Blue player and rightmost tile
             return True
-        elif player == 1 and i == self.size - 1: # Red player and bottom must tile
+        elif player == 1 and i == self.size - 1:  # Red player and bottommost tile
             return True
 
         for dx, dy in self.NEIGHBOR_OFFSETS:
             ni, nj = i + dx, j + dy
-            if self.dfs(ni, nj, player, visited, path): # dfs from each neighbor tile
+            if self.dfs(ni, nj, player, visited, path):  # dfs from each neighbor tile
                 self.connected = path
-                return True # A win has been found
+                return True  # A win has been found
 
         path.pop()
 
@@ -158,6 +160,3 @@ class Game:
 
     def backToMenu(self):
         main()
-
-
-
