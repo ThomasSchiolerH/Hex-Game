@@ -69,9 +69,9 @@ class Game:
                     if self.dfs(i, start_side, player, visited, []): # DFS from current tile
                         return True # Player has won
             elif player == 1:
-                if self.boardMatrix[start_side][i] == player:
-                    if self.dfs(start_side, i, player, visited, []):
-                        return True
+                if self.boardMatrix[start_side][i] == player: # Check if the tile is occupied by player 1
+                    if self.dfs(start_side, i, player, visited, []): # DFS from current tile
+                        return True # Player has won
 
         return False
 

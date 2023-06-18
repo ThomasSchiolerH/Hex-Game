@@ -49,7 +49,7 @@ class MPGame(Game):
                 self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
                 self.board.display_winner_box(self.playerTurn, self.screen)
             if self.check_win_condition(int(self.playerTurn)):  
-                print(f"Player {int(self.playerTurn)} wins!")
+                print(f"Player {int(not self.playerTurn)} wins!")
                 self.board.colorWinPath(self.connected, self.screen, WINCOLORS[not self.playerTurn])
                 self.board.display_winner_box(not self.playerTurn, self.screen)
 
