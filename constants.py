@@ -2,6 +2,16 @@ import pygame
 import pygame_menu
 import pygame_menu.font as pmfont
 
+
+
+"""
+    File By
+    Author : All
+
+"""
+
+
+
 # Multiplayer
 PORT = 9009
 
@@ -15,7 +25,7 @@ BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 LIGHT_GREY = (170, 170, 170)
 DARK_GREY = (100, 100, 100)
-WINCOLORS = [(0, 106, 209), (191, 0, 0)]
+WINCOLORS = [(145, 236, 250),(252, 111, 111)]
 BACKGROUND_COLOUR = (40, 41, 35)
 
 # Board

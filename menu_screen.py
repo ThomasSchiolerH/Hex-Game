@@ -6,6 +6,15 @@ from ai_game_advanced import AdvancedAIGame
 from constants import *
 
 
+
+"""
+    File By
+    Author : @Marcus / SovereignPihl
+
+"""
+
+
+
 def show_menu():
     pygame.init()
     # Window size
@@ -38,12 +47,16 @@ def show_menu():
             aiGame = AdvancedAIGame(gameScreen, gameSize)
         aiGame.play()
 
+    
+    #    @Authors: Marcus
     def get_game_screen(gameSize):
         boardSize = getGameResolution(gameSize)
         gameScreen = pygame.display.set_mode(boardSize)
         gameScreen.fill(BACKGROUND_COLOUR)
         return gameScreen
 
+    
+    #    @Authors: Marcus
     def init_screen(mode):
         gameSize = 0
         try:
@@ -72,11 +85,15 @@ def show_menu():
     def about_menu():
         mainmenu._open(about)
 
+    
+    #    @Authors: Marcus
     def host_game(size):
         gameSize = get_game_screen(size)
         mpgame = MPGame(gameSize, size)
         mpgame.host_game()
 
+    
+    #    @Authors: Marcus
     def join_game(size):
         gameSize = get_game_screen(size)
         mpgame = MPGame(gameSize, None)

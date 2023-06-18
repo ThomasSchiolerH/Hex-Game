@@ -7,6 +7,13 @@ from drawboard import Board
 import pygame
 import sys
 
+"""
+    File By
+    Author : @Marcus / SovereignPihl
+
+"""
+
+
 
 class MPGame(Game):
     def __init__(self, screen, size):
@@ -49,7 +56,7 @@ class MPGame(Game):
                 self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
                 self.board.display_winner_box(self.playerTurn, self.screen)
             if self.check_win_condition(int(self.playerTurn)):  
-                print(f"Player {int(self.playerTurn)} wins!")
+                print(f"Player {int(not self.playerTurn)} wins!")
                 self.board.colorWinPath(self.connected, self.screen, WINCOLORS[not self.playerTurn])
                 self.board.display_winner_box(not self.playerTurn, self.screen)
 
@@ -63,7 +70,7 @@ class MPGame(Game):
         active = False
         #"25.53.14.230", 9000
         #25.63.154.249
-        text = "25.67.64.7:9000"
+        text = ""
         done = False
 
         while not done:

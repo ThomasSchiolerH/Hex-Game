@@ -4,11 +4,21 @@ from math import cos, sin, pi, radians
 from pygame import gfxdraw
 from constants import *
 
+"""
+    File By
+    Author : @Marcus / SovereignPihl
+
+"""
+
+
+
+
 class Board:
     def __init__(self, size):
         self.size = size
         self.gap = 1.04
 
+    #    @Authors: Marcus
     def hexagon(self, x, y, screen, color):
         corners = [(x + (HEX_RADIUS * self.gap) * cos(radians(90) + 2 * pi * _ / 6),
                     y + (HEX_RADIUS * self.gap) * sin(radians(90) + 2 * pi * _ / 6))
@@ -18,12 +28,14 @@ class Board:
         aapolygon(screen, corners, BLACK)  # Outline
 
 
+    #    @Authors: Marcus
     def get_pixel_coords(self, i, j):
         x = HEX_OFFSET + (2 * HEX_RADIUS) * i + HEX_RADIUS * j  # MATH
         y = HEX_OFFSET + (1.75 * HEX_RADIUS) * j   # MATH
 
         return x, y
 
+    #    @Authors: Marcus
     def get_nearest_pos(self, x, y):
         j = round(4 * (y - HEX_OFFSET) / (7 * HEX_RADIUS))  # MATH
         i = round(- (3 * HEX_OFFSET - 7 * x + 4 * y) / (14 * HEX_RADIUS))  # MATH
@@ -123,6 +135,7 @@ class Board:
         pygame.display.update()
 
 
+    #    @Authors: Marcus
     def draw_board(self, matrix, screen):
         screen.fill(BACKGROUND_COLOUR)
         self.draw_border(screen)
@@ -134,6 +147,7 @@ class Board:
 
 
 
+    #    @Authors: Marcus
     def display_message(self, message, x_disp, y_disp, color, screen):
         font = pygame.font.Font('freesansbold.ttf', 28)
         text_surf = font.render(message, True, color)

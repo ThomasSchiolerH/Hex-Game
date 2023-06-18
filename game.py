@@ -7,6 +7,19 @@ import sys
 
 from main import main
 
+"""
+    File By
+    Author : @Marcus / SovereignPihl
+
+"""
+
+
+
+
+
+
+
+
 
 class Game:
     def __init__(self, screen, size):
@@ -22,6 +35,8 @@ class Game:
         self.restartButton = pygame.Rect(20, 10, 70, 30)
         self.menuButton = pygame.Rect(110, 10, 70, 30)
 
+
+    #    @Authors: Marcus
     def event_handler(self):
         running = True
         while running:
@@ -81,6 +96,7 @@ class Game:
         self.board.draw_board(self.boardMatrix, self.screen)  # Redraw the game board
         self.gameOver = False
 
+    #    @Authors: Marcus
     def turn(self, i, j):
         if self.boardMatrix[i][j] == -1:
             self.boardMatrix[i][j] = int(self.playerTurn)
@@ -103,9 +119,9 @@ class Game:
                     if self.dfs(i, start_side, player, visited, []):  # DFS from current tile
                         return True  # Player has won
             elif player == 1:
-                if self.boardMatrix[start_side][i] == player:
-                    if self.dfs(start_side, i, player, visited, []):
-                        return True
+                if self.boardMatrix[start_side][i] == player: # Check if the tile is occupied by player 1
+                    if self.dfs(start_side, i, player, visited, []): # DFS from current tile
+                        return True # Player has won
 
         return False
 
@@ -146,6 +162,7 @@ class Game:
                          (self.menuButton.centerx - text.get_width() // 2,
                           self.menuButton.centery - text.get_height() // 2))
 
+    #    @Authors: Marcus
     def play(self):
         print("Playing")
         self.board.draw_board(self.boardMatrix, self.screen)
@@ -156,6 +173,3 @@ class Game:
 
     def backToMenu(self):
         main()
-
-
-
