@@ -1,5 +1,8 @@
 import random
 from game import Game
+import pygame
+import sys
+from constants import WINCOLORS
 
 
 class SimpleAIGame(Game):
@@ -24,16 +27,26 @@ class SimpleAIGame(Game):
         if self.size == 3:
             self.three_stategy(i,j)
         else:
-            available_tiles = []
-            for i in range(self.size):
-                for j in range(self.size):
-                    if self.boardMatrix[i][j] == -1:
-                        available_tiles.append((i, j))
+            if self.check_win_condition(int(not self.playerTurn)):  # Check if the opponent has won
+                    print(f"Player {int(self.playerTurn)} wins!")
+                    self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
+                    self.board.display_winner_box(self.playerTurn, self.screen)
+            else:
+                available_tiles = []
+                for i in range(self.size):
+                    for j in range(self.size):
+                        if self.boardMatrix[i][j] == -1:
+                            available_tiles.append((i, j))
 
-            if available_tiles:
-                i, j = random.choice(available_tiles)
-                self.boardMatrix[i][j] = int(self.playerTurn)
-                self.playerTurn = not self.playerTurn
+                if available_tiles:
+                    i, j = random.choice(available_tiles)
+                    self.boardMatrix[i][j] = int(self.playerTurn)
+                    self.playerTurn = not self.playerTurn
+
+                    if self.check_win_condition(int(not self.playerTurn)):  # Check if the opponent has won
+                        print(f"Player {int(self.playerTurn)} wins!")
+                        self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
+                        self.board.display_winner_box(self.playerTurn, self.screen)
 
     def three_stategy(self, i, j):
         # Check if the player move is a corner move
