@@ -70,7 +70,7 @@ class SimpleAIGame(Game):
                             self.boardMatrix[i][j] = int(self.playerTurn)
                             break
         # Check if the player move is a right or left edge move
-        elif (i,j) in [(0, 1), (self.size-1, 1)]:
+        elif (i,j) in [(0, 1), (self.size-1, 1), (1, 0), (1, self.size-1)]:
             if i == 0:
                 if self.boardMatrix[i][self.size-1] == -1:
                     self.boardMatrix[i][self.size-1] = int(self.playerTurn)
@@ -83,6 +83,24 @@ class SimpleAIGame(Game):
             elif i == self.size-1:
                 if self.boardMatrix[i][0] == -1:
                     self.boardMatrix[i][0] = int(self.playerTurn)
+                else:
+                    while True:
+                        i, j = random.randint(0, self.size-1), random.randint(0, self.size-1)
+                        if self.boardMatrix[i][j] == -1:
+                            self.boardMatrix[i][j] = int(self.playerTurn)
+                            break
+            elif j == 0:
+                if self.boardMatrix[self.size-1][j] == -1:
+                    self.boardMatrix[self.size-1][j] = int(self.playerTurn)
+                else:
+                    while True:
+                        i, j = random.randint(0, self.size-1), random.randint(0, self.size-1)
+                        if self.boardMatrix[i][j] == -1:
+                            self.boardMatrix[i][j] = int(self.playerTurn)
+                            break
+            elif j == self.size-1:
+                if self.boardMatrix[0][j] == -1:
+                    self.boardMatrix[0][j] = int(self.playerTurn)
                 else:
                     while True:
                         i, j = random.randint(0, self.size-1), random.randint(0, self.size-1)
