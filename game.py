@@ -5,6 +5,9 @@ from drawboard import Board
 import pygame
 import sys
 
+from main import main
+
+
 class Game:
     def __init__(self, screen, size):
         self.size = size
@@ -15,8 +18,10 @@ class Game:
         self.screen = screen
         self.connected = []
         self.boardMatrix = [[-1 for _ in range(size)] for _ in range(size)]
-        self.button_rect = restartPos
-        self.button_text = pygame.font.SysFont('Corbel', 35).render('Restart', True, WHITE)
+        self.restartButton = restartPos
+        self.menuButton = pygame.Rect(200, 10, 100, 40)
+        self.restartText = pygame.font.SysFont('Corbel', 35).render('Restart', True, WHITE)
+        self.menuText = pygame.font.SysFont('Corbel', 35).render('Menu', True, WHITE)
 
 
     def event_handler(self):
@@ -38,23 +43,35 @@ class Game:
                             self.board.colorWinPath(self.connected, self.screen, WINCOLORS[self.playerTurn])
                             self.board.display_winner_box(self.playerTurn, self.screen)
                     # Check if restart button is clicked
-                    if self.button_rect.collidepoint(event.pos):
+                    if self.restartButton.collidepoint(event.pos):
                         self.restart_game()
+                    if self.menuButton.collidepoint(event.pos):
+                        self.backToMenu()
                 #Press R to restart
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         self.restart_game()
 
-            if self.button_rect.collidepoint(pygame.mouse.get_pos()):
-                pygame.draw.rect(self.screen, LIGHT_GREY, self.button_rect)
+            if self.restartButton.collidepoint(pygame.mouse.get_pos()):
+                pygame.draw.rect(self.screen, LIGHT_GREY, self.restartButton)
             else:
-                pygame.draw.rect(self.screen, DARK_GREY, self.button_rect)
+                pygame.draw.rect(self.screen, DARK_GREY, self.restartButton)
 
             # Center the text within the button
-            text_x = self.button_rect.centerx - self.button_text.get_width() // 2
-            text_y = self.button_rect.centery - self.button_text.get_height() // 2
+            text_x = self.restartButton.centerx - self.restartText.get_width() // 2
+            text_y = self.restartButton.centery - self.restartText.get_height() // 2
 
-            self.screen.blit(self.button_text, (text_x, text_y))
+            if self.menuButton.collidepoint(pygame.mouse.get_pos()):
+                pygame.draw.rect(self.screen, LIGHT_GREY, self.menuButton)
+            else:
+                pygame.draw.rect(self.screen, DARK_GREY, self.menuButton)
+
+            # Center the text within the button
+            text_x2 = self.menuButton.centerx - self.menuText.get_width() // 2
+            text_y2 = self.menuButton.centery - self.menuText.get_height() // 2
+
+            self.screen.blit(self.restartText, (text_x, text_y))
+            self.screen.blit(self.menuText, (text_x2, text_y2))
 
             pygame.display.update()
 
@@ -138,6 +155,9 @@ class Game:
         pygame.display.update()
         self.clock.tick(30)
         self.event_handler()
+
+    def backToMenu(self):
+        main()
 
 
 
